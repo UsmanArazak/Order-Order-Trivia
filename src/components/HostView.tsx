@@ -392,6 +392,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             questionId: question.id,
             startedAt,
             duration: 20,
+            questionData: question,
           },
         });
       }

@@ -300,8 +300,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     const broadcastChannel = supabase.channel(`room_${code}`);
     broadcastChannel
       .on('broadcast', { event: 'question_started' }, ({ payload }: { payload: any }) => {
-        const { questionId, startedAt, duration } = payload;
-        handleQuestionStartedBroadcast(questionId, startedAt, duration, playerId);
+        const { questionId, startedAt, duration, questionData } = payload;
+        handleQuestionStartedBroadcast(questionId, startedAt, duration, playerId, questionData);
       })
       .subscribe();
 
@@ -376,27 +376,28 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     questionId: string,
     startedAt: string,
     duration: number,
-    playerId: string
+    playerId: string,
+    questionData?: any
   ) => {
     roomStartedAtRef.current = startedAt;
     setHasSubmitted(false);
     setSelectedOption(null);
     setMyAnswer(null);
-    setCurrentQuestion(null);
 
-    const { data: qData } = await supabase
-      .from('questions')
-      .select('*')
-      .eq('id', questionId)
-      .single();
-
-    if (qData) {
-      setCurrentQuestion(qData);
+    if (questionData) {
+      setCurrentQuestion(questionData);
+    } else {
+      setCurrentQuestion(null);
+      const { data: qData } = await supabase
+        .from('questions')
+        .select('*')
+        .eq('id', questionId)
+        .single();
+      if (qData) setCurrentQuestion(qData);
     }
 
-    const elapsedMs = Date.now() - new Date(startedAt).getTime();
-    const remainingSeconds = Math.max(0, duration - Math.floor(elapsedMs / 1000));
-    setTimer(remainingSeconds);
+    // Always start the local timer from full duration for a smooth experience
+    setTimer(duration || 20);
     setTotalDuration(duration || 20);
 
     const { data: existingAns } = await supabase
