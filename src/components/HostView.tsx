@@ -109,6 +109,13 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     }
   }, [room?.game_status, currentQuestion?.id]);
 
+  // Bulletproof Auto-Reveal
+  useEffect(() => {
+    if (room?.game_status === 'question' && timer === 0) {
+      revealAnswer();
+    }
+  }, [timer, room?.game_status]);
+
   // Realtime Fallback Polling
   useEffect(() => {
     if (!hasSupabaseConfig || !roomCode) return;
@@ -350,7 +357,6 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         setTimer((prev) => {
           if (prev <= 1) {
             clearInterval(countdownIntervalRef.current!);
-            revealAnswer(); // Auto reveal when timer hits 0
             return 0;
           }
           return prev - 1;
@@ -404,7 +410,6 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         setTimer((prev) => {
           if (prev <= 1) {
             clearInterval(countdownIntervalRef.current!);
-            revealAnswer(); // Auto reveal when timer hits 0
             return 0;
           }
           return prev - 1;
@@ -753,57 +758,40 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     const totalCount = players.length;
 
     return (
-      <div className="host-layout container">
-        <div className="question-header">
-          <span className="tagline" style={{ color: 'var(--gold-dark)' }}>
-            Question {room.current_question_index + 1} of {questions.length}
+      <div className="host-layout container" style={{ padding: '0.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <span className="tagline" style={{ color: 'var(--gold-dark)', margin: 0 }}>
+            Q {room.current_question_index + 1} of {questions.length}
           </span>
-          <h1 className="question-text">{currentQuestion.question_text}</h1>
-        </div>
-
-        <div className="question-middle-section" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
-          {/* Timer */}
-          <div>
-            <div className={`host-timer-circle ${timer <= 5 ? 'warning' : ''}`}>
-              {timer}
-              <span className="host-timer-label">seconds</span>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <div style={{ padding: '0.2rem 0.6rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600 }}>
+              {answeredCount}/{totalCount} Logs
             </div>
-          </div>
-
-          {/* Visual Box */}
-          <div className="question-visual-box" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem', width: '100%', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-            <Clock size={48} style={{ animation: 'spin 4s linear infinite', color: 'var(--gold)', marginBottom: '1rem' }} />
-            <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--primary-dark)', textAlign: 'center' }}>
-              Debate in Progress...
-            </span>
-          </div>
-
-          {/* Answers Counter */}
-          <div className="answers-count-box">
-            <div className="answers-count-number">
-              {answeredCount} / {totalCount}
+            <div style={{ padding: '0.2rem 0.6rem', backgroundColor: timer <= 5 ? 'var(--color-red)' : 'var(--primary-dark)', color: 'white', borderRadius: '999px', fontSize: '0.9rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <Clock size={14} /> {timer}s
             </div>
-            <div className="answers-count-label">Answers Logged</div>
           </div>
         </div>
 
-        {/* Options grid (displayed for reference, no correct answer marked yet) */}
-        <div className="options-grid" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
+        <div style={{ padding: '0.75rem', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', marginBottom: '0.75rem' }}>
+          <h1 style={{ fontSize: '1.1rem', lineHeight: '1.4', margin: 0 }}>{currentQuestion.question_text}</h1>
+        </div>
+
+        {/* Options grid */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
           {currentQuestion.options.map((option, idx) => (
-            <div key={idx} className={`option-card option-${idx}`}>
-              <span className="option-shape" style={{ borderRadius: '50%', width: '32px', height: '32px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', fontWeight: 800, fontSize: '1rem' }}>
+            <div key={idx} style={{ padding: '0.75rem', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span style={{ borderRadius: '50%', width: '24px', height: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 800, fontSize: '0.85rem', backgroundColor: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', flexShrink: 0 }}>
                 {['A', 'B', 'C', 'D'][idx]}
               </span>
-              {option}
+              <span style={{ fontSize: '0.95rem', flex: 1, wordBreak: 'break-word' }}>{option}</span>
             </div>
           ))}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button className="btn btn-secondary" onClick={endGame} style={{ width: '100%' }}>
-            Cancel Game Early
-          </button>
-        </div>
+        <button className="btn btn-secondary" onClick={endGame} style={{ width: '100%', padding: '0.5rem' }}>
+          Cancel Game Early
+        </button>
       </div>
     );
   }
