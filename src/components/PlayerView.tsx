@@ -458,9 +458,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       setSelectedOption(existingAns.selected_option);
     }
 
-    const elapsedMs = Date.now() - new Date(startedAt).getTime();
-    const remainingSeconds = Math.max(0, 20 - Math.floor(elapsedMs / 1000));
-    setTimer(remainingSeconds);
+    // Ignore Date.now() to prevent device clock desync issues
+    setTimer(20);
     setTotalDuration(20);
 
     if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
