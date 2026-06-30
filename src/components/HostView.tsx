@@ -133,8 +133,15 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
   }, [room?.game_status, roomCode]);
 
   const fetchQuestions = async () => {
+    setLoading(true);
     if (!hasSupabaseConfig) {
-      setQuestions(MOCK_QUESTIONS);
+      const local = localStorage.getItem('order_trivia_mock_questions');
+      if (local) {
+        setQuestions(JSON.parse(local));
+      } else {
+        setQuestions(MOCK_QUESTIONS);
+      }
+      setLoading(false);
       return;
     }
 
@@ -147,6 +154,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
       setQuestions(data || []);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch questions');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -669,7 +678,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <button className="btn btn-gold" onClick={createRoom} disabled={loading} style={{ width: '100%' }}>
-              {loading ? 'Creating...' : 'Create Game Lobby'}
+              {loading ? 'Loading...' : 'Create Game Lobby'}
             </button>
             <button className="btn btn-secondary" onClick={onBack} style={{ width: '100%' }}>
               <ArrowLeft size={18} /> Back

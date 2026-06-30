@@ -249,18 +249,20 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
 
   return (
     <div className="container" style={{ maxWidth: '900px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <button className="btn btn-secondary" onClick={onBack}>
-          <ArrowLeft size={18} /> Exit Admin
-        </button>
-        <h2 style={{ color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button className="btn btn-secondary" onClick={onBack}>
+            <ArrowLeft size={18} /> Exit Admin
+          </button>
+          {!isAdding && (
+            <button className="btn btn-primary" onClick={() => setIsAdding(true)}>
+              <Plus size={18} /> New Question
+            </button>
+          )}
+        </div>
+        <h2 style={{ color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'center' }}>
           Question Bank Management {!hasSupabaseConfig && '• Sandbox'}
         </h2>
-        {!isAdding && (
-          <button className="btn btn-primary" onClick={() => setIsAdding(true)}>
-            <Plus size={18} /> New Question
-          </button>
-        )}
       </div>
 
       {error && (
@@ -286,11 +288,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div className="options-grid" style={{ marginBottom: '1.5rem' }}>
               {options.map((option, idx) => (
                 <div key={idx} className="form-group" style={{ marginBottom: 0 }}>
                   <label style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span>Option {idx + 1}</span>
+                    <span>Option {String.fromCharCode(65 + idx)}</span>
                     <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.8rem', cursor: 'pointer', textTransform: 'none' }}>
                       <input
                         type="radio"
@@ -312,7 +314,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
                     }}
                     value={option}
                     onChange={e => handleOptionChange(idx, e.target.value)}
-                    placeholder={`Enter Option ${idx + 1}...`}
+                    placeholder={`Enter Option ${String.fromCharCode(65 + idx)}...`}
                     required
                   />
                 </div>
@@ -338,39 +340,41 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
             </div>
           )}
           {questions.map((q, idx) => (
-            <div key={q.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)' }}>
-              <div style={{ flex: 1, paddingRight: '2rem' }}>
-                <h4 style={{ fontSize: '1.2rem', marginTop: '0.25rem', marginBottom: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)' }}>
+            <div key={q.id} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1.25rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <h4 style={{ fontSize: '1.2rem', marginTop: '0.25rem', marginBottom: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)', flex: 1 }}>
                   {idx + 1}. {q.question_text}
                 </h4>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem' }}>
+                  <button className="btn btn-secondary" onClick={() => handleEdit(q)} style={{ padding: '0.5rem' }}>
+                    <Edit3 size={16} />
+                  </button>
+                  <button className="btn btn-secondary" onClick={() => handleDelete(q.id)} style={{ padding: '0.5rem', color: 'var(--color-red)' }}>
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+              <div className="options-grid">
                   {q.options.map((opt, oIdx) => (
                     <div
                       key={oIdx}
                       style={{
-                        padding: '0.4rem 0.8rem',
-                        fontSize: '0.9rem',
+                        padding: '0.5rem 0.8rem',
+                        fontSize: '0.95rem',
                         backgroundColor: oIdx === q.correct_index ? 'rgba(11, 102, 35, 0.08)' : 'var(--bg-card)',
-                        border: oIdx === q.correct_index ? '1px solid var(--primary)' : '1px solid var(--border-color)',
-                        borderRadius: '4px',
-                        color: oIdx === q.correct_index ? 'var(--primary-dark)' : 'var(--text-secondary)'
+                        border: oIdx === q.correct_index ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                        borderRadius: 'var(--radius-sm)',
+                        color: oIdx === q.correct_index ? 'var(--primary-dark)' : 'var(--text-secondary)',
+                        display: 'flex',
+                        alignItems: 'center'
                       }}
                     >
-                      <span style={{ fontWeight: 800, marginRight: '0.5rem', color: oIdx === q.correct_index ? 'var(--primary)' : 'var(--text-muted)' }}>
-                        {oIdx === 0 ? '▲' : oIdx === 1 ? '◆' : oIdx === 2 ? '●' : '■'}
+                      <span style={{ fontWeight: 800, marginRight: '0.75rem', color: oIdx === q.correct_index ? 'var(--primary)' : 'var(--text-muted)' }}>
+                        {String.fromCharCode(65 + oIdx)}
                       </span>
                       {opt}
                     </div>
                   ))}
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button className="btn btn-secondary" onClick={() => handleEdit(q)} style={{ padding: '0.5rem' }}>
-                  <Edit3 size={16} />
-                </button>
-                <button className="btn btn-secondary" onClick={() => handleDelete(q.id)} style={{ padding: '0.5rem', color: 'var(--color-red)' }}>
-                  <Trash2 size={16} />
-                </button>
               </div>
             </div>
           ))}
