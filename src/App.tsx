@@ -67,39 +67,30 @@ function App() {
               </div>
             )}
 
-            <div style={{ marginBottom: '2.5rem' }}>
-              <div style={{ display: 'inline-flex', padding: '1rem', backgroundColor: 'var(--bg-surface)', border: '2px solid var(--gold)', borderRadius: '50%', color: 'var(--gold)', marginBottom: '1.5rem', boxShadow: '0 4px 15px rgba(212, 175, 55, 0.15)' }}>
-                <Gavel size={48} />
+            <div className="hero-section">
+              <div className="hero-logo-wrapper">
+                <Gavel size={36} />
               </div>
-              <h1 style={{ fontSize: '2.8rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--primary-dark)', fontFamily: 'var(--font-heading)' }}>
+              <h1 className="hero-title">
                 Parliamentary Trivia
               </h1>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto' }}>
+              <p className="hero-subtitle">
                 A live, speed-based multiplayer trivia quiz for the Daura Students assembly.
               </p>
             </div>
 
             {/* Selection Grid */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '2rem' }}>
+            <div className="selection-grid">
               {/* Player Card */}
               <button 
                 onClick={() => setView('player')}
-                className="btn btn-gold"
-                style={{ 
-                  padding: '1.5rem', 
-                  borderRadius: 'var(--radius-md)', 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  alignItems: 'center', 
-                  gap: '0.5rem',
-                  fontSize: '1.4rem'
-                }}
+                className="btn btn-gold selection-btn-player"
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <Users size={24} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <Users size={22} />
                   <span>Join Chambers as Player</span>
                 </div>
-                <span style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 500, color: 'var(--primary-dark)' }}>
+                <span className="selection-btn-desc" style={{ color: 'var(--primary-dark)' }}>
                   Enter room code to cast your votes on your phone
                 </span>
               </button>
@@ -107,22 +98,13 @@ function App() {
               {/* Host Card */}
               <button 
                 onClick={() => setView('host')}
-                className="btn btn-primary"
-                style={{ 
-                  padding: '1.5rem', 
-                  borderRadius: 'var(--radius-md)', 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  alignItems: 'center', 
-                  gap: '0.5rem',
-                  fontSize: '1.4rem'
-                }}
+                className="btn btn-primary selection-btn-host"
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <Play size={24} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <Play size={22} />
                   <span>Host New Game session</span>
                 </div>
-                <span style={{ fontSize: '0.9rem', opacity: 0.9, fontWeight: 400 }}>
+                <span className="selection-btn-desc">
                   Project the questions, timer, and leaderboard live
                 </span>
               </button>
@@ -132,13 +114,14 @@ function App() {
                 onClick={() => setView('admin')}
                 className="btn btn-secondary"
                 style={{ 
-                  padding: '1.2rem', 
+                  padding: '1rem', 
                   borderRadius: 'var(--radius-md)', 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
                   gap: '0.75rem',
-                  fontSize: '1.1rem'
+                  fontSize: '1.05rem',
+                  width: '100%'
                 }}
               >
                 <BookOpen size={18} />
