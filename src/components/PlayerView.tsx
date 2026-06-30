@@ -860,39 +860,52 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     const pointsEarned = myAnswer ? myAnswer.points : 0;
 
     return (
-      <div className="player-layout">
-        <div className={`player-feedback ${isCorrect ? 'correct' : 'incorrect'}`}>
-          <div className="player-feedback-icon" style={{ color: isCorrect ? 'var(--color-green)' : 'var(--color-red)' }}>
-            {isCorrect ? '✓' : '✗'}
+      <div className="player-layout" style={{ padding: '0.5rem' }}>
+        <div className={`player-feedback ${isCorrect ? 'correct' : 'incorrect'}`} style={{ padding: '1.25rem 1rem', margin: 0, width: '100%', maxWidth: '400px' }}>
+          <div className="player-feedback-icon" style={{ 
+            color: isCorrect ? 'var(--color-green)' : 'var(--color-red)', 
+            fontSize: '3.5rem', 
+            marginBottom: '0.25rem',
+            lineHeight: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginInline: 'auto'
+          }}>
+            {isCorrect ? '✓' : myAnswer ? '✗' : <Clock size={56} />}
           </div>
-          <h2 className="player-feedback-title" style={{ color: isCorrect ? 'var(--color-green)' : 'var(--color-red)' }}>
+          <h2 className="player-feedback-title" style={{ 
+            color: isCorrect ? 'var(--color-green)' : 'var(--color-red)',
+            fontSize: '1.5rem',
+            marginBottom: '0.25rem'
+          }}>
             {isCorrect ? 'CORRECT!' : myAnswer ? 'INCORRECT' : "TIME'S UP"}
           </h2>
           
           {/* Answer validation and correct option details */}
-          <div style={{ margin: '1.5rem 0', padding: '1.25rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', textAlign: 'left', width: '100%' }}>
-            <h4 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', marginBottom: '1rem', fontWeight: 700 }}>
+          <div style={{ margin: '1rem 0', padding: '0.75rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', textAlign: 'left', width: '100%' }}>
+            <h4 style={{ fontSize: '0.95rem', color: 'var(--primary-dark)', marginBottom: '0.75rem', fontWeight: 700, lineHeight: '1.3' }}>
               {currentQuestion.question_text}
             </h4>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', display: 'flex', gap: '0.75rem', alignItems: 'center', backgroundColor: isCorrect ? 'rgba(11, 102, 35, 0.08)' : 'rgba(226, 27, 60, 0.08)' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: isCorrect ? 'var(--color-green)' : 'var(--color-red)' }}>YOURS:</span>
-                <span style={{ fontWeight: 700 }}>
-                  {myAnswer ? ['A', 'B', 'C', 'D'][myAnswer.selected_option] : 'None'}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', display: 'flex', gap: '0.5rem', alignItems: 'center', backgroundColor: isCorrect ? 'rgba(11, 102, 35, 0.08)' : 'rgba(226, 27, 60, 0.08)' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: isCorrect ? 'var(--color-green)' : 'var(--color-red)' }}>YOURS:</span>
+                <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>
+                  {myAnswer ? ['A', 'B', 'C', 'D'][myAnswer.selected_option] : '—'}
                 </span>
-                <span style={{ fontSize: '0.95rem' }}>
-                  {myAnswer ? currentQuestion.options[myAnswer.selected_option] : "Time's up"}
+                <span style={{ fontSize: '0.85rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {myAnswer ? currentQuestion.options[myAnswer.selected_option] : "No answer"}
                 </span>
               </div>
               
               {!isCorrect && (
-                <div style={{ padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--primary)', display: 'flex', gap: '0.75rem', alignItems: 'center', backgroundColor: 'rgba(11, 102, 35, 0.08)' }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary)' }}>CORRECT:</span>
-                  <span style={{ fontWeight: 700, color: 'var(--primary)' }}>
+                <div style={{ padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--primary)', display: 'flex', gap: '0.5rem', alignItems: 'center', backgroundColor: 'rgba(11, 102, 35, 0.08)' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)' }}>CORRECT:</span>
+                  <span style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.85rem' }}>
                     {['A', 'B', 'C', 'D'][currentQuestion.correct_index]}
                   </span>
-                  <span style={{ fontSize: '0.95rem', color: 'var(--primary-dark)', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--primary-dark)', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {currentQuestion.options[currentQuestion.correct_index]}
                   </span>
                 </div>
@@ -900,16 +913,24 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
             </div>
           </div>
 
-          <span className="tagline">Points Gained</span>
-          <div className="player-feedback-points" style={{ color: isCorrect ? 'var(--color-green)' : 'var(--color-red)' }}>
-            +{pointsEarned}
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: '0.75rem', backgroundColor: 'var(--bg-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em' }}>Points Gained</span>
+              <div style={{ color: isCorrect ? 'var(--color-green)' : 'var(--color-red)', fontSize: '1.35rem', fontWeight: 800, marginTop: '0.25rem' }}>
+                +{pointsEarned}
+              </div>
+            </div>
+            <div style={{ width: '1px', backgroundColor: 'var(--border-color)', margin: '0 0.5rem' }}></div>
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em' }}>Total Score</span>
+              <div style={{ color: 'var(--primary-dark)', fontSize: '1.35rem', fontWeight: 800, marginTop: '0.25rem' }}>
+                {player.score}
+              </div>
+            </div>
           </div>
 
-          <span className="tagline">Total Score</span>
-          <div className="player-feedback-score">{player.score} pts</div>
-
           {!hasSupabaseConfig && (
-            <button className="btn btn-primary" onClick={nextSandboxQuestion} style={{ marginTop: '2rem', width: '100%' }}>
+            <button className="btn btn-primary" onClick={nextSandboxQuestion} style={{ marginTop: '1.5rem', width: '100%' }}>
               {sandboxQuestionIndex + 1 >= MOCK_QUESTIONS.length ? 'Show Standings' : 'Next Motion'}
             </button>
           )}

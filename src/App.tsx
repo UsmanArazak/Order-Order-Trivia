@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { HostView } from './components/HostView';
 import { PlayerView } from './components/PlayerView';
 import { AdminView } from './components/AdminView';
-import { hasSupabaseConfig } from './lib/supabase';
-import { Gavel, Play, Users, BookOpen, Sparkles, Database } from 'lucide-react';
+import { Play, Users, BookOpen } from 'lucide-react';
 import './App.css';
 
 type ViewState = 'select' | 'host' | 'player' | 'admin';
@@ -16,24 +15,10 @@ function App() {
       {/* Brand Header */}
       <header className="app-header">
         <div className="brand">
-          <Gavel className="brand-logo" />
+          <img src="/logo.png" alt="Daura Students Parliamentary Club" className="brand-logo" style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} />
           <div>
             <span className="brand-text">Order! Order!</span>
             <div className="tagline" style={{ fontSize: '0.65rem' }}>Daura Students Parliamentary Club</div>
-          </div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          {hasSupabaseConfig ? (
-            <span style={{ fontSize: '0.75rem', backgroundColor: '#e2f7e5', color: '#1b8a32', padding: '0.3rem 0.6rem', borderRadius: '4px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <Database size={12} /> Connected
-            </span>
-          ) : (
-            <span style={{ fontSize: '0.75rem', backgroundColor: '#fff9e6', color: '#b27a00', padding: '0.3rem 0.6rem', borderRadius: '4px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.25rem', border: '1px solid #ffe89e' }}>
-              <Sparkles size={12} /> Sandbox Mode
-            </span>
-          )}
-          <div style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 700 }}>
-            Session: 2026 Assembly
           </div>
         </div>
       </header>
@@ -43,35 +28,11 @@ function App() {
         {view === 'select' && (
           <div className="container" style={{ maxWidth: '650px', textAlign: 'center', justifyContent: 'center' }}>
             
-            {/* Database Warning Banner */}
-            {!hasSupabaseConfig && (
-              <div style={{ 
-                padding: '1.25rem', 
-                backgroundColor: 'rgba(212, 175, 55, 0.08)', 
-                border: '1.5px solid var(--gold)', 
-                borderRadius: 'var(--radius-md)', 
-                color: 'var(--text-primary)', 
-                marginBottom: '2rem', 
-                textAlign: 'left',
-                display: 'flex',
-                gap: '1rem',
-                alignItems: 'center'
-              }}>
-                <Sparkles size={36} style={{ color: 'var(--gold)', flexShrink: 0 }} />
-                <div>
-                  <h4 style={{ color: 'var(--primary-dark)', marginBottom: '0.25rem', fontWeight: 700 }}>Running in Sandbox Mode</h4>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                    No database credentials detected. All buttons are fully clickable, running a <strong>simulated game</strong> locally so you can preview the design and trivia flow. Add keys to <code style={{ color: 'var(--primary-dark)', backgroundColor: 'var(--bg-card)', padding: '0.1rem 0.3rem', borderRadius: '3px' }}>.env.local</code> to connect live phones.
-                  </p>
-                </div>
-              </div>
-            )}
-
             <div className="hero-section">
-              <div className="hero-logo-wrapper">
-                <Gavel size={36} />
+              <div className="hero-logo-wrapper" style={{ padding: '0', background: 'transparent', boxShadow: 'none' }}>
+                <img src="/logo.png" alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--primary)' }} />
               </div>
-              <h1 className="hero-title">
+              <h1 className="hero-title" style={{ marginTop: '0.5rem' }}>
                 Parliamentary Trivia
               </h1>
               <p className="hero-subtitle">
