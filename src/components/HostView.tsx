@@ -109,6 +109,29 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     }
   }, [room?.game_status, currentQuestion?.id]);
 
+  // Realtime Fallback Polling
+  useEffect(() => {
+    if (!hasSupabaseConfig || !roomCode) return;
+    
+    let interval: any = null;
+    
+    if (room?.game_status === 'lobby') {
+      // Poll players list in lobby every 2 seconds
+      interval = setInterval(() => {
+        fetchPlayers(roomCode);
+      }, 2000);
+    } else if (room?.game_status === 'question') {
+      // Poll answers count in question phase every 2 seconds
+      interval = setInterval(() => {
+        fetchAnswers(roomCode);
+      }, 2000);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [room?.game_status, roomCode]);
+
   const fetchQuestions = async () => {
     if (!hasSupabaseConfig) {
       setQuestions(MOCK_QUESTIONS);

@@ -77,6 +77,40 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     };
   }, []);
 
+  // Realtime Fallback Polling for room status changes
+  useEffect(() => {
+    if (!hasSupabaseConfig || !roomCode || !player) return;
+    
+    // Poll room status every 2 seconds
+    const interval = setInterval(async () => {
+      try {
+        const { data: updatedRoom, error } = await supabase
+          .from('rooms')
+          .select('*')
+          .eq('code', roomCode)
+          .maybeSingle();
+          
+        if (!error && updatedRoom) {
+          setRoom(prev => {
+            // Only update and trigger state change if something actually changed
+            if (!prev || 
+                prev.game_status !== updatedRoom.game_status || 
+                prev.current_question_index !== updatedRoom.current_question_index || 
+                prev.question_started_at !== updatedRoom.question_started_at) {
+              handleRoomStateChange(updatedRoom, player.id);
+              return updatedRoom;
+            }
+            return prev;
+          });
+        }
+      } catch (err) {
+        console.error('Error polling room status:', err);
+      }
+    }, 2000);
+    
+    return () => clearInterval(interval);
+  }, [roomCode, player?.id]);
+
   const cleanupRealtime = () => {
     if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
     if (channelRef.current && hasSupabaseConfig) {
