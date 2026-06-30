@@ -90,10 +90,7 @@ function App() {
               </button>
             </div>
 
-            {/* Footer info */}
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              Make sure to configure <code style={{ fontSize: '0.85rem' }}>.env.local</code> with your Supabase credentials.
-            </div>
+
           </div>
         )}
 
