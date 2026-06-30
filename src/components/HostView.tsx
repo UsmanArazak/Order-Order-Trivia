@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase, hasSupabaseConfig } from '../lib/supabase';
 import type { Question, Room, Player, Answer } from '../types';
-import { ArrowLeft, Play, Award, CheckCircle, ChevronRight, Users, Clock } from 'lucide-react';
+import { ArrowLeft, Play, Award, ChevronRight, Users, Clock } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface HostViewProps {
