@@ -239,7 +239,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
 
       if (roomErr) throw roomErr;
       if (!roomData) {
-        setError('Room not found! Verify the code with the host.');
+        setError('Room not found! Verify the code with Usman.');
         setLoading(false);
         return;
       }
@@ -679,7 +679,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
         <div className="join-card">
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <span className="tagline">Daura LGA Students Parliamentary Club</span>
-            <h2 style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>Chamber Trivia</h2>
+            <h2 style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>Usman Trivia Game</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
               Enter the room code and your nickname to join the assembly.
             </p>
@@ -712,7 +712,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
               <input
                 type="text"
                 className="form-input"
-                placeholder="e.g. Honorable Ali"
+                placeholder="e.g. Hon. Gidado"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
                 disabled={loading}
@@ -757,7 +757,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
               <span className="tagline">Chamber Connected</span>
               <h2 style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>Welcome, {player.name}!</h2>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                You are seated in the chambers. Waiting for the Speaker (host) to start the parliamentary session.
+                You are seated in the chambers. Waiting for the Speaker (Usman) to start the parliamentary session.
               </p>
             </div>
           )}
@@ -1079,6 +1079,18 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
           <button className="btn btn-secondary" onClick={leaveGame} style={{ width: '100%' }}>
             Exit Chambers
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback Loading Screen (e.g. moving to next question)
+  if (room.game_status === 'question' && !currentQuestion) {
+    return (
+      <div className="player-layout">
+        <div className="player-status-waiting">
+          <div className="loading-spinner"></div>
+          <h2>Preparing Next Question...</h2>
         </div>
       </div>
     );
