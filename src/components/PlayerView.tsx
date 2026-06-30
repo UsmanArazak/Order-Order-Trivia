@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase, hasSupabaseConfig } from '../lib/supabase';
 import type { Player, Room, Question, Answer } from '../types';
-import { ArrowLeft, Clock, Award, LogOut, Sparkles } from 'lucide-react';
+import { ArrowLeft, Clock, Award, LogOut, Sparkles, Crown } from 'lucide-react';
 
 interface PlayerViewProps {
   onBack: () => void;
@@ -51,6 +51,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
   const [myRank, setMyRank] = useState<number | null>(null);
   const [totalPlayersCount, setTotalPlayersCount] = useState<number>(5);
   const [neighborPlayers, setNeighborPlayers] = useState<(Player & { rank: number })[]>([]);
+  const [topPlayers, setTopPlayers] = useState<any[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -366,7 +367,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       fetchMyAnswerPoints(playerId);
     }
 
-    if (updatedRoom.game_status === 'leaderboard') {
+    if (updatedRoom.game_status === 'leaderboard' || updatedRoom.game_status === 'finished') {
       fetchMyRank(updatedRoom.code, playerId);
     }
   };
@@ -525,6 +526,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
         const startIdx = Math.max(0, idx - 1);
         const endIdx = Math.min(allPlayers.length, idx + 2);
         setNeighborPlayers(playersWithRank.slice(startIdx, endIdx));
+        setTopPlayers(playersWithRank.slice(0, 3));
       }
     }
   };
@@ -797,22 +799,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       );
     }
 
-    if (timer <= 0) {
-      return (
-        <div className="player-layout">
-          <div className="player-status-waiting">
-            <Clock size={64} style={{ color: 'var(--color-red)', marginBottom: '1rem' }} />
-            <h2 style={{ color: 'var(--color-red)' }}>Time's Up!</h2>
-            <p style={{ color: 'var(--text-secondary)' }}>You did not submit an answer in time.</p>
-            {!hasSupabaseConfig && (
-              <button className="btn btn-gold" onClick={() => setRoom(prev => prev ? { ...prev, game_status: 'reveal' } : null)} style={{ marginTop: '2rem', width: '100%' }}>
-                See Results
-              </button>
-            )}
-          </div>
-        </div>
-      );
-    }
+
 
     return (
       <div className="player-layout">
@@ -876,11 +863,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
           </div>
           <h2 className="player-feedback-title" style={{ 
             color: isCorrect ? 'var(--color-green)' : 'var(--color-red)',
-            fontSize: '1.5rem',
-            marginBottom: '0.25rem'
+            fontSize: '2rem',
+            marginBottom: '0.25rem',
+            fontWeight: 900
           }}>
-            {isCorrect ? 'CORRECT!' : myAnswer ? 'INCORRECT' : "TIME'S UP"}
+            {isCorrect ? 'CORRECT!' : 'INCORRECT!'}
           </h2>
+          {!myAnswer && (
+            <div style={{ color: 'var(--color-red)', fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem', textAlign: 'center' }}>
+              (Time's Up - No Answer)
+            </div>
+          )}
           
           {/* Answer validation and correct option details */}
           <div style={{ margin: '1rem 0', padding: '0.75rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', textAlign: 'left', width: '100%' }}>
@@ -1040,10 +1033,49 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
   if (room.game_status === 'finished') {
     return (
       <div className="player-layout">
-        <div className="join-card" style={{ textAlign: 'center', borderTop: '4px solid var(--gold)' }}>
+        <div className="join-card" style={{ textAlign: 'center', borderTop: '4px solid var(--gold)', width: '100%', maxWidth: '500px' }}>
           <Award size={64} style={{ color: 'var(--gold)', marginBottom: '1rem', marginInline: 'auto' }} />
           <h2 style={{ marginBottom: '0.5rem' }}>Debate Adjourned!</h2>
           <p style={{ color: 'var(--text-secondary)' }}>You completed the parliamentary trivia quiz.</p>
+
+          {/* Podium */}
+          {topPlayers.length > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '0.5rem', height: '180px', margin: '2rem 0' }}>
+              {/* Silver: 2nd Place */}
+              {topPlayers[1] && (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%' }}>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#C0C0C0', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{topPlayers[1].name}</span>
+                  <div style={{ width: '100%', height: '100px', backgroundColor: '#e0e0e0', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid #C0C0C0' }}>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 900, color: '#a0a0a0' }}>2</span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)', marginTop: 'auto', marginBottom: '0.5rem' }}>{topPlayers[1].score}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Gold: 1st Place */}
+              {topPlayers[0] && (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '35%', zIndex: 2 }}>
+                  <Crown size={24} style={{ color: 'var(--gold)', marginBottom: '0.25rem' }} />
+                  <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--gold-dark)', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{topPlayers[0].name}</span>
+                  <div style={{ width: '100%', height: '140px', backgroundColor: 'var(--gold)', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid var(--gold-dark)', boxShadow: '0 -4px 12px rgba(212, 175, 55, 0.4)' }}>
+                    <span style={{ fontSize: '2rem', fontWeight: 900, color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>1</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'white', marginTop: 'auto', marginBottom: '0.5rem' }}>{topPlayers[0].score}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Bronze: 3rd Place */}
+              {topPlayers[2] && (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%' }}>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#cd7f32', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{topPlayers[2].name}</span>
+                  <div style={{ width: '100%', height: '80px', backgroundColor: '#f0e6d2', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid #cd7f32' }}>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#b87333' }}>3</span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)', marginTop: 'auto', marginBottom: '0.5rem' }}>{topPlayers[2].score}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           <div style={{ margin: '1.5rem 0' }}>
             <span className="tagline">Final Position</span>
