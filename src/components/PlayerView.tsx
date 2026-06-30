@@ -318,9 +318,18 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
           filter: `code=eq.${code}`,
         },
         (payload: any) => {
-          const updatedRoom = payload.new as Room;
-          setRoom(updatedRoom);
-          handleRoomStateChange(updatedRoom, playerId);
+          setRoom((prev) => {
+            if (!prev) return prev;
+            const mergedRoom = { ...prev, ...payload.new } as Room;
+            
+            // Only trigger state change if something actually changed
+            if (prev.game_status !== mergedRoom.game_status || 
+                prev.current_question_index !== mergedRoom.current_question_index || 
+                prev.question_started_at !== mergedRoom.question_started_at) {
+              handleRoomStateChange(mergedRoom, playerId);
+            }
+            return mergedRoom;
+          });
         }
       )
       .subscribe();
@@ -373,6 +382,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     setHasSubmitted(false);
     setSelectedOption(null);
     setMyAnswer(null);
+    setCurrentQuestion(null);
 
     const { data: qData } = await supabase
       .from('questions')
@@ -419,6 +429,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       return;
     }
 
+    setCurrentQuestion(null);
     const { data: qList } = await supabase
       .from('questions')
       .select('*')
