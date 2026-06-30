@@ -670,7 +670,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             <span className="tagline">Daura LGA Students Parliamentary Club</span>
             <h2 style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>Host Trivia Game</h2>
             <p style={{ color: 'var(--text-secondary)' }}>
-              Project the questions onto a screen while students join on their phones.
+              Start the session and manage the trivia game.
             </p>
           </div>
           {error && (
@@ -705,7 +705,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           </button>
         </div>
 
-        <div className="lobby-grid">
+        <div className="lobby-grid" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           <div className="lobby-sidebar">
             <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>ROOM CODE</h3>
             <div className="room-code-display">{roomCode}</div>
@@ -761,7 +761,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           <h1 className="question-text">{currentQuestion.question_text}</h1>
         </div>
 
-        <div className="question-middle-section">
+        <div className="question-middle-section" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
           {/* Timer */}
           <div>
             <div className={`host-timer-circle ${timer <= 5 ? 'warning' : ''}`}>
@@ -788,7 +788,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         </div>
 
         {/* Options grid (displayed for reference, no correct answer marked yet) */}
-        <div className="options-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="options-grid" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
           {currentQuestion.options.map((option, idx) => (
             <div key={idx} className={`option-card option-${idx}`}>
               <span className="option-shape" style={{ borderRadius: '50%', width: '32px', height: '32px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', fontWeight: 800, fontSize: '1rem' }}>

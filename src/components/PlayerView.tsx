@@ -580,6 +580,16 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
         },
       ]);
       if (ansErr) throw ansErr;
+
+      setMyAnswer({
+        id: 'temp',
+        player_id: player.id,
+        room_code: room.code,
+        question_id: currentQuestion.id,
+        selected_option: optionIdx,
+        response_time: responseTimeSec,
+        points: 0
+      });
     } catch (err: any) {
       console.error('Error submitting answer:', err.message);
       setHasSubmitted(false);
