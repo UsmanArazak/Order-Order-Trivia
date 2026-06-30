@@ -771,9 +771,9 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           </div>
 
           {/* Visual Box */}
-          <div className="question-visual-box">
-            <Clock size={64} style={{ animation: 'spin 4s linear infinite', opacity: 0.1 }} />
-            <span style={{ position: 'absolute', fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+          <div className="question-visual-box" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem', width: '100%', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)' }}>
+            <Clock size={48} style={{ animation: 'spin 4s linear infinite', color: 'var(--gold)', marginBottom: '1rem' }} />
+            <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--primary-dark)', textAlign: 'center' }}>
               Debate in Progress...
             </span>
           </div>
@@ -799,12 +799,9 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           ))}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <button className="btn btn-secondary" onClick={endGame}>
-            End Game
-          </button>
-          <button className="btn btn-gold" onClick={revealAnswer} disabled={loading}>
-            <CheckCircle size={18} /> Skip Timer & Reveal Answer
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button className="btn btn-secondary" onClick={endGame} style={{ width: '100%' }}>
+            Cancel Game Early
           </button>
         </div>
       </div>
@@ -850,19 +847,20 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         </div>
 
         {/* Options grid showing the correct answer highlighted */}
-        <div className="options-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="options-grid" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
           {currentQuestion.options.map((option, idx) => {
             const isCorrect = idx === currentQuestion.correct_index;
             return (
               <div
                 key={idx}
                 className={`option-card option-${idx} ${isCorrect ? 'correct-answer-card' : 'dimmed'}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem' }}
               >
-                <span className="option-shape" style={{ borderRadius: '50%', width: '32px', height: '32px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', fontWeight: 800, fontSize: '1rem' }}>
+                <span className="option-shape" style={{ borderRadius: '50%', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 800, fontSize: '1rem', flexShrink: 0 }}>
                   {['A', 'B', 'C', 'D'][idx]}
                 </span>
-                {option}
-                {isCorrect && <span style={{ marginLeft: 'auto', fontSize: '0.85rem', backgroundColor: 'var(--primary)', color: '#fff', padding: '0.2rem 0.6rem', borderRadius: '4px', fontWeight: 700 }}>CORRECT MOTION</span>}
+                <span style={{ flex: 1, textAlign: 'left', wordBreak: 'break-word' }}>{option}</span>
+                {isCorrect && <span style={{ fontSize: '0.7rem', backgroundColor: 'var(--primary)', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 800, textAlign: 'center' }}>CORRECT</span>}
               </div>
             );
           })}
@@ -896,15 +894,19 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             </p>
           </div>
 
-          <div className="leaderboard-list">
+          <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {ranked.slice(0, 5).map((player) => (
-              <div key={player.id} className={`leaderboard-item rank-${player.rank}`}>
-                <span className="leaderboard-rank">#{player.rank}</span>
-                <span className="leaderboard-name">{player.name}</span>
-                <span className="leaderboard-score">{player.score} pts</span>
-                <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`}>
-                  {player.change > 0 ? `▲ ${player.change}` : player.change < 0 ? `▼ ${Math.abs(player.change)}` : '—'}
-                </span>
+              <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem', gap: '0.5rem', borderRadius: 'var(--radius-md)' }}>
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
+                  <span className="leaderboard-rank" style={{ fontSize: '1.25rem', width: 'auto' }}>#{player.rank}</span>
+                  <span className="leaderboard-name" style={{ fontSize: '1.25rem', whiteSpace: 'normal', flex: 1, textAlign: 'center' }}>{player.name}</span>
+                </div>
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
+                  <span className="leaderboard-score" style={{ width: 'auto', textAlign: 'center' }}>{player.score} pts</span>
+                  <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ width: 'auto', textAlign: 'center' }}>
+                    {player.change > 0 ? `▲ ${player.change}` : player.change < 0 ? `▼ ${Math.abs(player.change)}` : '—'}
+                  </span>
+                </div>
               </div>
             ))}
           </div>

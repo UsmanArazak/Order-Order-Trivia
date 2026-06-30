@@ -66,7 +66,7 @@ function App() {
                   <span>Host New Game session</span>
                 </div>
                 <span className="selection-btn-desc">
-                  Project the questions, timer, and leaderboard live
+                  Manage the questions, timer, and leaderboard
                 </span>
               </button>
 
