@@ -813,6 +813,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           {dist.map((count, idx) => {
             const pct = (count / maxVal) * 80 + 10;
             const isCorrect = idx === currentQuestion.correct_index;
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']; // Blue, Green, Yellow, Red
             return (
               <div key={idx} className="chart-bar-wrapper">
                 <div
@@ -820,6 +821,9 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
                   style={{
                     height: `${pct}%`,
                     border: isCorrect ? '3px solid var(--primary-dark)' : 'none',
+                    backgroundColor: colors[idx],
+                    color: '#fff',
+                    textShadow: '0 1px 2px rgba(0,0,0,0.4)',
                     minWidth: '30px'
                   }}
                 >

@@ -581,6 +581,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       ]);
       if (ansErr) throw ansErr;
 
+      const isCorrect = optionIdx === currentQuestion.correct_index;
+      const points = isCorrect ? Math.max(500, Math.round(1000 * (1 - (responseTimeSec / 20) * 0.5))) : 0;
+
       setMyAnswer({
         id: 'temp',
         player_id: player.id,
@@ -588,7 +591,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
         question_id: currentQuestion.id,
         selected_option: optionIdx,
         response_time: responseTimeSec,
-        points: 0
+        points: points
       });
     } catch (err: any) {
       console.error('Error submitting answer:', err.message);
@@ -945,27 +948,27 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
   // 5. Leaderboard Feedback Screen
   if (room.game_status === 'leaderboard') {
     return (
-      <div className="player-layout">
-        <div className="join-card" style={{ textAlign: 'center', borderTop: '4px solid var(--gold)' }}>
-          <Award size={48} style={{ color: 'var(--gold)', marginBottom: '1rem', marginInline: 'auto' }} />
-          <span className="tagline">Legislative Standing</span>
-          <h1 style={{ fontSize: '3rem', margin: '0.5rem 0', color: 'var(--gold-dark)' }}>
+      <div className="player-layout" style={{ padding: '0.5rem' }}>
+        <div style={{ backgroundColor: 'var(--bg-surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', borderTop: '4px solid var(--gold)', textAlign: 'center', width: '100%' }}>
+          <Award size={36} style={{ color: 'var(--gold)', marginBottom: '0.5rem', marginInline: 'auto' }} />
+          <span className="tagline" style={{ fontSize: '0.75rem', margin: 0 }}>Legislative Standing</span>
+          <h1 style={{ fontSize: '2.5rem', margin: '0.25rem 0', color: 'var(--gold-dark)', lineHeight: 1 }}>
             #{myRank || '—'}
           </h1>
-          <p style={{ fontSize: '1.2rem', fontWeight: 600 }}>
+          <p style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>
             out of {totalPlayersCount} members
           </p>
-          <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', marginBottom: '1.5rem' }}>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '0.25rem', marginBottom: '1rem', fontSize: '0.9rem' }}>
             Total Score: {player.score} pts
           </p>
 
           {/* Mini Leaderboard Chamber Neighbors */}
           {neighborPlayers.length > 0 && (
-            <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem', textAlign: 'left' }}>
-              <span className="tagline" style={{ display: 'block', marginBottom: '0.75rem', textAlign: 'center' }}>
+            <div style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'left' }}>
+              <span className="tagline" style={{ display: 'block', marginBottom: '0.5rem', textAlign: 'center', fontSize: '0.75rem' }}>
                 Your Chamber Neighbors
               </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.75rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                 {neighborPlayers.map((p) => {
                   const isMe = p.id === player.id;
                   return (
@@ -975,30 +978,30 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        padding: '0.6rem 0.8rem',
-                        backgroundColor: isMe ? 'rgba(11, 102, 35, 0.08)' : 'transparent',
-                        border: isMe ? '1px solid var(--primary)' : '1px solid transparent',
-                        borderRadius: '6px',
+                        padding: '0.5rem',
+                        backgroundColor: isMe ? 'rgba(11, 102, 35, 0.08)' : 'var(--bg-card)',
+                        border: isMe ? '1px solid var(--primary)' : '1px solid var(--border-color)',
+                        borderRadius: 'var(--radius-sm)',
                         fontWeight: isMe ? 700 : 500
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <span style={{ fontSize: '0.9rem', color: isMe ? 'var(--primary-dark)' : 'var(--text-secondary)', fontWeight: 800 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '0.85rem', color: isMe ? 'var(--primary-dark)' : 'var(--text-secondary)', fontWeight: 800 }}>
                           #{p.rank}
                         </span>
-                        <span style={{ color: isMe ? 'var(--primary-dark)' : 'var(--text-primary)' }}>
+                        <span style={{ fontSize: '0.9rem', color: isMe ? 'var(--primary-dark)' : 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100px' }}>
                           {p.name} {isMe && '(You)'}
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ color: isMe ? 'var(--primary-dark)' : 'var(--text-secondary)', fontSize: '0.95rem' }}>
+                        <span style={{ color: isMe ? 'var(--primary-dark)' : 'var(--text-secondary)', fontSize: '0.85rem' }}>
                           {p.score} pts
                         </span>
                         {!isMe && (
-                          <span style={{ fontSize: '0.8rem', color: p.rank < (myRank || 1) ? 'var(--color-red)' : 'var(--color-green)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '0.7rem', color: p.rank < (myRank || 1) ? 'var(--color-red)' : 'var(--color-green)', fontWeight: 600 }}>
                             {p.rank < (myRank || 1) 
-                              ? `-${p.score - player.score} pts` 
-                              : `+${player.score - p.score} pts`
+                              ? `-${p.score - player.score}` 
+                              : `+${player.score - p.score}`
                             }
                           </span>
                         )}
@@ -1017,21 +1020,21 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
               const playerAbove = neighborPlayers[myIdx - 1];
               const diff = playerAbove.score - player.score;
               return (
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontStyle: 'italic', marginTop: '0.75rem', marginBottom: '1.5rem' }}>
-                  You are only <strong style={{ color: 'var(--primary-dark)' }}>{diff} points</strong> behind <strong style={{ color: 'var(--primary-dark)' }}>{playerAbove.name}</strong>!
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontStyle: 'italic', margin: '0.5rem 0 1rem 0' }}>
+                  Only <strong style={{ color: 'var(--primary-dark)' }}>{diff} pts</strong> behind {playerAbove.name}!
                 </p>
               );
             } else if (neighborPlayers.length > 0 && myRank === 1) {
               return (
-                <p style={{ fontSize: '0.9rem', color: 'var(--primary-dark)', fontWeight: 600, marginTop: '0.75rem', marginBottom: '1.5rem' }}>
-                  🎉 You are currently leading the Chamber! Keep it up!
+                <p style={{ fontSize: '0.8rem', color: 'var(--primary-dark)', fontWeight: 700, margin: '0.5rem 0 1rem 0' }}>
+                  🎉 You're leading the Chamber!
                 </p>
               );
             }
             return null;
           })()}
 
-          <p style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 700 }}>
+          <p style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 700, margin: 0 }}>
             Look at the main screen for the next motion!
           </p>
         </div>
