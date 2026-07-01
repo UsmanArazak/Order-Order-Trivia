@@ -647,7 +647,6 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
   // Rank players for Leaderboard (including rank change indicators)
   const getRankedPlayers = () => {
     const currentSorted = [...players].sort((a, b) => b.score - a.score);
-    const previousSorted = [...players].sort((a, b) => b.previous_score - a.previous_score);
 
     return currentSorted.map((player, idx) => {
       const currentRank = idx + 1;
