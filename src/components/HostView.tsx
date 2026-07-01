@@ -877,8 +877,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     const isLastQuestion = room.current_question_index + 1 >= questions.length;
 
     return (
-      <div className="host-layout container" style={{ padding: '0.5rem' }}>
-        <div className="leaderboard-container" style={{ padding: '1rem' }}>
+      <div className="host-layout container" style={{ padding: '0.25rem', width: '100%', maxWidth: '100%' }}>
+        <div className="leaderboard-container" style={{ padding: '0.5rem', width: '100%' }}>
           <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
             <Award size={36} style={{ color: 'var(--gold)', marginBottom: '0.5rem' }} />
             <h2 style={{ textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1.2rem', margin: 0 }}>Leaderboard</h2>
@@ -889,12 +889,12 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
           <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {ranked.slice(0, 5).map((player) => (
-              <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0.75rem 0.5rem', gap: '0.5rem', borderRadius: 'var(--radius-sm)' }}>
-                <span className="leaderboard-rank" style={{ fontSize: '1rem', width: '28px', flexShrink: 0, textAlign: 'center', display: 'flex', justifyContent: 'center' }}>#{player.rank}</span>
-                <span className="leaderboard-name" style={{ fontSize: '0.95rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 700 }}>{player.name}</span>
+              <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0.75rem 0.75rem', gap: '0.5rem', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', width: '100%' }}>
+                <span className="leaderboard-rank" style={{ fontSize: '1rem', width: '28px', flexShrink: 0, textAlign: 'center', display: 'flex', justifyContent: 'center', color: 'var(--text-secondary)' }}>#{player.rank}</span>
+                <span className="leaderboard-name" style={{ fontSize: '1rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 700, color: 'var(--primary-dark)' }}>{player.name}</span>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, gap: '0.1rem' }}>
-                  <span className="leaderboard-score" style={{ fontSize: '0.9rem', fontWeight: 800 }}>{player.score} pts</span>
-                  <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ fontSize: '0.75rem', fontWeight: 800 }}>
+                  <span className="leaderboard-score" style={{ fontSize: '0.95rem', fontWeight: 800 }}>{player.score} pts</span>
+                  <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ fontSize: '0.75rem', fontWeight: 800, color: player.change > 0 ? 'var(--color-green)' : player.change < 0 ? 'var(--color-red)' : 'var(--text-muted)' }}>
                     {player.change > 0 ? `▲ ${player.change}` : player.change < 0 ? `▼ ${Math.abs(player.change)}` : '—'}
                   </span>
                 </div>
