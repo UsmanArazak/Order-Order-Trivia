@@ -42,7 +42,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [timer, setTimer] = useState<number>(20);
+  const [timer, setTimer] = useState<number>(30);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -339,7 +339,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     const question = questions[index];
     setCurrentQuestion(question);
     setAnswers([]); // clear answers for new question
-    setTimer(20);
+    setTimer(30);
 
     const startedAt = new Date().toISOString();
 
@@ -398,7 +398,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             questionIndex: index,
             questionId: question.id,
             startedAt,
-            duration: 20,
+            duration: 30,
             questionData: question,
           },
         });
@@ -435,8 +435,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           let pointsEarned = 0;
 
           if (playerAnswer && playerAnswer.selected_option === currentQuestion.correct_index) {
-            const respTime = Math.min(20, Math.max(0, playerAnswer.response_time));
-            pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 20) * 0.5)));
+            const respTime = Math.min(30, Math.max(0, playerAnswer.response_time));
+            pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 30) * 0.5)));
           }
 
           if (playerAnswer) {
@@ -485,8 +485,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
         if (playerAnswer && playerAnswer.selected_option === currentQuestion.correct_index) {
           // Speed calculation
-          const respTime = Math.min(20, Math.max(0, playerAnswer.response_time));
-          pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 20) * 0.5)));
+          const respTime = Math.min(30, Math.max(0, playerAnswer.response_time));
+          pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 30) * 0.5)));
         }
 
         const newScore = player.score + pointsEarned;

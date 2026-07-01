@@ -44,7 +44,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
 
   // Game UI State
   const [timer, setTimer] = useState<number>(0);
-  const [totalDuration, setTotalDuration] = useState<number>(20);
+  const [totalDuration, setTotalDuration] = useState<number>(30);
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [myAnswer, setMyAnswer] = useState<Answer | null>(null);
@@ -398,8 +398,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     }
 
     // Always start the local timer from full duration for a smooth experience
-    setTimer(duration || 20);
-    setTotalDuration(duration || 20);
+    setTimer(duration || 30);
+    setTotalDuration(duration || 30);
 
     const { data: existingAns } = await supabase
       .from('answers')
@@ -461,8 +461,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     }
 
     // Ignore Date.now() to prevent device clock desync issues
-    setTimer(20);
-    setTotalDuration(20);
+    setTimer(30);
+    setTotalDuration(30);
 
     if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
     countdownIntervalRef.current = setInterval(() => {
@@ -544,7 +544,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     if (!hasSupabaseConfig) {
       // Sandbox Mode: simulate response locally
       const isCorrect = optionIdx === currentQuestion.correct_index;
-      const points = isCorrect ? Math.max(500, Math.round(1000 * (1 - (responseTimeSec / 20) * 0.5))) : 0;
+      const points = isCorrect ? Math.max(500, Math.round(1000 * (1 - (responseTimeSec / 30) * 0.5))) : 0;
 
       setTimeout(() => {
         setMyAnswer({
@@ -582,7 +582,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       if (ansErr) throw ansErr;
 
       const isCorrect = optionIdx === currentQuestion.correct_index;
-      const points = isCorrect ? Math.max(500, Math.round(1000 * (1 - (responseTimeSec / 20) * 0.5))) : 0;
+      const points = isCorrect ? Math.max(500, Math.round(1000 * (1 - (responseTimeSec / 30) * 0.5))) : 0;
 
       setMyAnswer({
         id: 'temp',
@@ -612,8 +612,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     setMyAnswer(null);
     const question = MOCK_QUESTIONS[index];
     setCurrentQuestion(question);
-    setTimer(20);
-    setTotalDuration(20);
+    setTimer(30);
+    setTotalDuration(30);
     setRoom(prev => prev ? {
       ...prev,
       game_status: 'question',
@@ -954,7 +954,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       <div className="player-layout" style={{ padding: '0.5rem' }}>
         <div style={{ backgroundColor: 'var(--bg-surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', borderTop: '4px solid var(--gold)', textAlign: 'center', width: '100%' }}>
           <Award size={36} style={{ color: 'var(--gold)', marginBottom: '0.5rem', marginInline: 'auto' }} />
-          <span className="tagline" style={{ fontSize: '0.75rem', margin: 0 }}>Legislative Standing</span>
+          <span className="tagline" style={{ fontSize: '0.75rem', margin: 0 }}>Leaderboard</span>
           <h1 style={{ fontSize: '2.5rem', margin: '0.25rem 0', color: 'var(--gold-dark)', lineHeight: 1 }}>
             #{myRank || '—'}
           </h1>
@@ -1036,10 +1036,6 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
             }
             return null;
           })()}
-
-          <p style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 700, margin: 0 }}>
-            Look at the main screen for the next motion!
-          </p>
         </div>
       </div>
     );
