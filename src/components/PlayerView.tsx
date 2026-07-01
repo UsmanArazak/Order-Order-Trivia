@@ -692,7 +692,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
         <div className="join-card">
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <span className="tagline">Daura LGA Students Parliamentary Club</span>
-            <h2 style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>Usman Trivia Game</h2>
+            <h2 style={{ marginTop: '0.5rem', marginBottom: '0.5rem', textTransform: 'uppercase', color: 'var(--primary-dark)', fontWeight: 900 }}>ORDER! ORDER!</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
               Enter the room code and your nickname to join the assembly.
             </p>

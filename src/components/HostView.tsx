@@ -673,7 +673,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         <div className="join-card">
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <span className="tagline">Daura LGA Students Parliamentary Club</span>
-            <h2 style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>Host Trivia Game</h2>
+            <h2 style={{ marginTop: '0.5rem', marginBottom: '0.5rem', textTransform: 'uppercase', color: 'var(--primary-dark)', fontWeight: 900 }}>ORDER! ORDER!</h2>
             <p style={{ color: 'var(--text-secondary)' }}>
               Start the session and manage the trivia game.
             </p>
