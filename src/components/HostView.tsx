@@ -120,7 +120,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
   useEffect(() => {
     if (!room || room.game_status !== 'question') return;
     const pollInterval = setInterval(() => {
-      supabase.from('rooms').select('game_status').eq('code', room.code).single().then(({ data }) => {
+      supabase.from('rooms').select('game_status').eq('code', room.code).single().then(({ data }: { data: any }) => {
         if (data && data.game_status !== room.game_status) {
           setRoom(prev => prev ? { ...prev, game_status: data.game_status } : prev);
         }
