@@ -802,14 +802,14 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     const maxVal = Math.max(...dist, 1);
 
     return (
-      <div className="host-layout container">
-        <div className="question-header">
-          <span className="tagline">Question {room.current_question_index + 1} • Answer Distribution</span>
-          <h1 className="question-text">{currentQuestion.question_text}</h1>
+      <div className="host-layout container" style={{ padding: '0.5rem' }}>
+        <div className="question-header" style={{ marginBottom: '1rem' }}>
+          <span className="tagline" style={{ fontSize: '0.8rem', margin: 0 }}>Answer Distribution</span>
+          <h1 className="question-text" style={{ fontSize: '1.1rem', margin: '0.5rem 0 0 0' }}>{currentQuestion.question_text}</h1>
         </div>
 
         {/* Answer Bar Chart */}
-        <div className="chart-container">
+        <div className="chart-container" style={{ height: '120px', marginBottom: '1rem', padding: '1rem', gap: '0.5rem' }}>
           {dist.map((count, idx) => {
             const pct = (count / maxVal) * 80 + 10;
             const isCorrect = idx === currentQuestion.correct_index;
@@ -819,13 +819,14 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
                   className={`chart-bar bar-${idx}`}
                   style={{
                     height: `${pct}%`,
-                    border: isCorrect ? '4px solid var(--primary-dark)' : 'none',
+                    border: isCorrect ? '3px solid var(--primary-dark)' : 'none',
+                    minWidth: '30px'
                   }}
                 >
                   {count}
                 </div>
                 <div className="chart-label">
-                  <span className="option-shape" style={{ width: '32px', height: '32px', fontSize: '1rem', backgroundColor: isCorrect ? 'var(--primary)' : 'rgba(0,0,0,0.05)', color: isCorrect ? '#fff' : 'var(--text-secondary)', borderRadius: '50%', fontWeight: 800, display: 'inline-flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <span className="option-shape" style={{ width: '24px', height: '24px', fontSize: '0.8rem', backgroundColor: isCorrect ? 'var(--primary)' : 'rgba(0,0,0,0.05)', color: isCorrect ? '#fff' : 'var(--text-secondary)', borderRadius: '50%', fontWeight: 800, display: 'inline-flex', justifyContent: 'center', alignItems: 'center' }}>
                     {isCorrect ? '✓' : ['A', 'B', 'C', 'D'][idx]}
                   </span>
                 </div>
@@ -835,31 +836,31 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         </div>
 
         {/* Options grid showing the correct answer highlighted */}
-        <div className="options-grid" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
+        <div className="options-grid" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
           {currentQuestion.options.map((option, idx) => {
             const isCorrect = idx === currentQuestion.correct_index;
             return (
               <div
                 key={idx}
                 className={`option-card option-${idx} ${isCorrect ? 'correct-answer-card' : 'dimmed'}`}
-                style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem' }}
               >
-                <span className="option-shape" style={{ borderRadius: '50%', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 800, fontSize: '1rem', flexShrink: 0 }}>
+                <span className="option-shape" style={{ borderRadius: '50%', width: '24px', height: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
                   {['A', 'B', 'C', 'D'][idx]}
                 </span>
-                <span style={{ flex: 1, textAlign: 'left', wordBreak: 'break-word' }}>{option}</span>
-                {isCorrect && <span style={{ fontSize: '0.7rem', backgroundColor: 'var(--primary)', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: 800, textAlign: 'center' }}>CORRECT</span>}
+                <span style={{ flex: 1, textAlign: 'left', wordBreak: 'break-word', fontSize: '0.9rem' }}>{option}</span>
+                {isCorrect && <span style={{ fontSize: '0.65rem', backgroundColor: 'var(--primary)', color: '#fff', padding: '0.2rem 0.4rem', borderRadius: '4px', fontWeight: 800 }}>CORRECT</span>}
               </div>
             );
           })}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <button className="btn btn-secondary" onClick={endGame}>
-            End Game
-          </button>
-          <button className="btn btn-gold" onClick={showLeaderboard} disabled={loading}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <button className="btn btn-gold" onClick={showLeaderboard} disabled={loading} style={{ width: '100%', padding: '0.75rem' }}>
             Show Leaderboard <ChevronRight size={18} />
+          </button>
+          <button className="btn btn-secondary" onClick={endGame} style={{ width: '100%', padding: '0.75rem' }}>
+            Cancel Game Early
           </button>
         </div>
       </div>
@@ -872,26 +873,26 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     const isLastQuestion = room.current_question_index + 1 >= questions.length;
 
     return (
-      <div className="host-layout container">
-        <div className="leaderboard-container">
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <Award size={48} style={{ color: 'var(--gold)', marginBottom: '0.5rem' }} />
-            <h2 style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>Leaderboard Standings</h2>
-            <p style={{ color: 'var(--text-secondary)' }}>
-              Current standing in Chambers after Question {room.current_question_index + 1}
+      <div className="host-layout container" style={{ padding: '0.5rem' }}>
+        <div className="leaderboard-container" style={{ padding: '1rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            <Award size={36} style={{ color: 'var(--gold)', marginBottom: '0.5rem' }} />
+            <h2 style={{ textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1.2rem', margin: 0 }}>Leaderboard</h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', margin: '0.25rem 0' }}>
+              Round {room.current_question_index + 1}
             </p>
           </div>
 
-          <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {ranked.slice(0, 5).map((player) => (
-              <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem', gap: '0.5rem', borderRadius: 'var(--radius-md)' }}>
+              <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.75rem', gap: '0.25rem', borderRadius: 'var(--radius-md)' }}>
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
-                  <span className="leaderboard-rank" style={{ fontSize: '1.25rem', width: 'auto' }}>#{player.rank}</span>
-                  <span className="leaderboard-name" style={{ fontSize: '1.25rem', whiteSpace: 'normal', flex: 1, textAlign: 'center' }}>{player.name}</span>
+                  <span className="leaderboard-rank" style={{ fontSize: '1.1rem', width: 'auto' }}>#{player.rank}</span>
+                  <span className="leaderboard-name" style={{ fontSize: '1.1rem', whiteSpace: 'normal', flex: 1, textAlign: 'center' }}>{player.name}</span>
                 </div>
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
-                  <span className="leaderboard-score" style={{ width: 'auto', textAlign: 'center' }}>{player.score} pts</span>
-                  <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ width: 'auto', textAlign: 'center' }}>
+                  <span className="leaderboard-score" style={{ width: 'auto', textAlign: 'center', fontSize: '0.9rem' }}>{player.score} pts</span>
+                  <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ width: 'auto', textAlign: 'center', fontSize: '0.8rem' }}>
                     {player.change > 0 ? `▲ ${player.change}` : player.change < 0 ? `▼ ${Math.abs(player.change)}` : '—'}
                   </span>
                 </div>
@@ -899,12 +900,12 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             ))}
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2.5rem' }}>
-            <button className="btn btn-secondary" onClick={endGame}>
-              End Game
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1.5rem' }}>
+            <button className="btn btn-gold" onClick={handleNext} disabled={loading} style={{ width: '100%', padding: '0.75rem' }}>
+              {isLastQuestion ? 'Show Final Podium' : 'Next Question'} <ChevronRight size={18} />
             </button>
-            <button className="btn btn-gold" onClick={handleNext} disabled={loading}>
-              {isLastQuestion ? 'Show Podium' : 'Next Question'} <ChevronRight size={18} />
+            <button className="btn btn-secondary" onClick={endGame} style={{ width: '100%', padding: '0.75rem' }}>
+              Cancel Game Early
             </button>
           </div>
         </div>
@@ -929,70 +930,61 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     }, 200);
 
     return (
-      <div className="host-layout container">
+      <div className="host-layout container" style={{ padding: '0.5rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <span className="tagline">Quiz Completed</span>
-          <h1 style={{ color: 'var(--primary-dark)' }}>The Parliamentary Podium</h1>
-          <p style={{ color: 'var(--text-secondary)' }}>
-            Congratulations to our top legislators of the day!
-          </p>
+          <span className="tagline" style={{ fontSize: '0.8rem', margin: 0 }}>Quiz Completed</span>
+          <h1 style={{ color: 'var(--primary-dark)', fontSize: '1.5rem', margin: '0.25rem 0' }}>The Podium</h1>
         </div>
 
-        <div className="podium-layout">
+        <div className="podium-layout" style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', height: '160px', gap: '0.25rem' }}>
           {/* 2nd Place */}
-          {p2 ? (
-            <div className="podium-place second">
-              <div className="podium-avatar">🥈</div>
-              <div className="podium-name">{p2.name}</div>
-              <div className="podium-score">{p2.score} pts</div>
-              <div className="podium-pillar">2</div>
+          {p2 && (
+            <div className="podium-place second" style={{ width: '32%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ fontSize: '1.5rem' }}>🥈</div>
+              <div className="podium-name" style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'center' }}>{p2.name}</div>
+              <div className="podium-score" style={{ fontSize: '0.7rem' }}>{p2.score}</div>
+              <div className="podium-pillar" style={{ height: '70px', width: '100%', backgroundColor: '#e0e0e0', border: '1px solid #c0c0c0', borderRadius: '4px 4px 0 0', display: 'flex', justifyContent: 'center', paddingTop: '0.5rem', fontSize: '1.2rem', fontWeight: 900, color: '#a0a0a0' }}>2</div>
             </div>
-          ) : (
-            <div style={{ width: '30%' }}></div>
           )}
 
           {/* 1st Place */}
-          {p1 ? (
-            <div className="podium-place first">
-              <div className="podium-avatar">👑</div>
-              <div className="podium-name">{p1.name}</div>
-              <div className="podium-score">{p1.score} pts</div>
-              <div className="podium-pillar">1</div>
+          {p1 && (
+            <div className="podium-place first" style={{ width: '36%', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 2 }}>
+              <div style={{ fontSize: '1.8rem' }}>👑</div>
+              <div className="podium-name" style={{ fontSize: '0.8rem', fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'center' }}>{p1.name}</div>
+              <div className="podium-score" style={{ fontSize: '0.7rem', fontWeight: 700 }}>{p1.score}</div>
+              <div className="podium-pillar" style={{ height: '100px', width: '100%', backgroundColor: 'var(--gold)', border: '1px solid var(--gold-dark)', borderRadius: '4px 4px 0 0', display: 'flex', justifyContent: 'center', paddingTop: '0.5rem', fontSize: '1.5rem', fontWeight: 900, color: '#fff', boxShadow: '0 -4px 12px rgba(212, 175, 55, 0.4)' }}>1</div>
             </div>
-          ) : (
-            <div style={{ width: '30%' }}></div>
           )}
 
           {/* 3rd Place */}
-          {p3 ? (
-            <div className="podium-place third">
-              <div className="podium-avatar">🥉</div>
-              <div className="podium-name">{p3.name}</div>
-              <div className="podium-score">{p3.score} pts</div>
-              <div className="podium-pillar">3</div>
+          {p3 && (
+            <div className="podium-place third" style={{ width: '32%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ fontSize: '1.5rem' }}>🥉</div>
+              <div className="podium-name" style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'center' }}>{p3.name}</div>
+              <div className="podium-score" style={{ fontSize: '0.7rem' }}>{p3.score}</div>
+              <div className="podium-pillar" style={{ height: '50px', width: '100%', backgroundColor: '#f0e6d2', border: '1px solid #cd7f32', borderRadius: '4px 4px 0 0', display: 'flex', justifyContent: 'center', paddingTop: '0.5rem', fontSize: '1.1rem', fontWeight: 900, color: '#b87333' }}>3</div>
             </div>
-          ) : (
-            <div style={{ width: '30%' }}></div>
           )}
         </div>
 
         {/* List remaining participants if any */}
         {sorted.length > 3 && (
-          <div style={{ maxWidth: '600px', margin: '2rem auto', backgroundColor: 'var(--bg-surface)', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-            <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Honorable Mentions</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center' }}>
+          <div style={{ margin: '1rem 0', backgroundColor: 'var(--bg-surface)', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+            <h3 style={{ marginBottom: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', textAlign: 'center' }}>Honorable Mentions</h3>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center' }}>
               {sorted.slice(3).map((p, idx) => (
-                <span key={p.id} className="player-bubble" style={{ fontSize: '0.9rem', padding: '0.3rem 0.6rem' }}>
-                  #{idx + 4} {p.name} ({p.score} pts)
+                <span key={p.id} className="player-bubble" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>
+                  #{idx + 4} {p.name}
                 </span>
               ))}
             </div>
           </div>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <button className="btn btn-gold" onClick={endGame}>
-            Close Session
+        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+          <button className="btn btn-gold" onClick={endGame} style={{ width: '100%', padding: '0.75rem' }}>
+            Close Assembly
           </button>
         </div>
       </div>
