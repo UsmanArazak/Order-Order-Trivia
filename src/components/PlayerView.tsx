@@ -1021,7 +1021,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
             const myIdx = neighborPlayers.findIndex(p => p.id === player.id);
             if (myIdx > 0) {
               const playerAbove = neighborPlayers[myIdx - 1];
-              const diff = playerAbove.score - player.score;
+              const diff = playerAbove.score - neighborPlayers[myIdx].score;
               return (
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontStyle: 'italic', margin: '0.5rem 0 1rem 0' }}>
                   Only <strong style={{ color: 'var(--primary-dark)' }}>{diff} pts</strong> behind {playerAbove.name}!

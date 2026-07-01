@@ -938,34 +938,38 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           <h1 style={{ color: 'var(--primary-dark)', fontSize: '1.5rem', margin: '0.25rem 0' }}>The Podium</h1>
         </div>
 
-        <div className="podium-layout" style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', height: '160px', gap: '0.25rem' }}>
-          {/* 2nd Place */}
+        <div className="podium-layout" style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '0.5rem', height: '180px', margin: '1rem 0 2rem 0' }}>
+          {/* Silver: 2nd Place */}
           {p2 && (
-            <div className="podium-place second" style={{ width: '32%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ fontSize: '1.5rem' }}>🥈</div>
-              <div className="podium-name" style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'center' }}>{p2.name}</div>
-              <div className="podium-score" style={{ fontSize: '0.7rem' }}>{p2.score}</div>
-              <div className="podium-pillar" style={{ height: '70px', width: '100%', backgroundColor: '#e0e0e0', border: '1px solid #c0c0c0', borderRadius: '4px 4px 0 0', display: 'flex', justifyContent: 'center', paddingTop: '0.5rem', fontSize: '1.2rem', fontWeight: 900, color: '#a0a0a0' }}>2</div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#C0C0C0', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{p2.name}</span>
+              <div style={{ width: '100%', height: '100px', backgroundColor: '#e0e0e0', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid #C0C0C0' }}>
+                <span style={{ fontSize: '1.5rem', fontWeight: 900, color: '#a0a0a0' }}>2</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)', marginTop: 'auto', marginBottom: '0.5rem' }}>{p2.score}</span>
+              </div>
             </div>
           )}
 
-          {/* 1st Place */}
+          {/* Gold: 1st Place */}
           {p1 && (
-            <div className="podium-place first" style={{ width: '36%', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 2 }}>
-              <div style={{ fontSize: '1.8rem' }}>👑</div>
-              <div className="podium-name" style={{ fontSize: '0.8rem', fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'center' }}>{p1.name}</div>
-              <div className="podium-score" style={{ fontSize: '0.7rem', fontWeight: 700 }}>{p1.score}</div>
-              <div className="podium-pillar" style={{ height: '100px', width: '100%', backgroundColor: 'var(--gold)', border: '1px solid var(--gold-dark)', borderRadius: '4px 4px 0 0', display: 'flex', justifyContent: 'center', paddingTop: '0.5rem', fontSize: '1.5rem', fontWeight: 900, color: '#fff', boxShadow: '0 -4px 12px rgba(212, 175, 55, 0.4)' }}>1</div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '35%', zIndex: 2 }}>
+              <span style={{ fontSize: '1.5rem', marginBottom: '0.1rem' }}>👑</span>
+              <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--gold-dark)', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{p1.name}</span>
+              <div style={{ width: '100%', height: '140px', backgroundColor: 'var(--gold)', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid var(--gold-dark)', boxShadow: '0 -4px 12px rgba(212, 175, 55, 0.4)' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 900, color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>1</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'white', marginTop: 'auto', marginBottom: '0.5rem' }}>{p1.score}</span>
+              </div>
             </div>
           )}
 
-          {/* 3rd Place */}
+          {/* Bronze: 3rd Place */}
           {p3 && (
-            <div className="podium-place third" style={{ width: '32%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ fontSize: '1.5rem' }}>🥉</div>
-              <div className="podium-name" style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'center' }}>{p3.name}</div>
-              <div className="podium-score" style={{ fontSize: '0.7rem' }}>{p3.score}</div>
-              <div className="podium-pillar" style={{ height: '50px', width: '100%', backgroundColor: '#f0e6d2', border: '1px solid #cd7f32', borderRadius: '4px 4px 0 0', display: 'flex', justifyContent: 'center', paddingTop: '0.5rem', fontSize: '1.1rem', fontWeight: 900, color: '#b87333' }}>3</div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#cd7f32', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{p3.name}</span>
+              <div style={{ width: '100%', height: '80px', backgroundColor: '#f0e6d2', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid #cd7f32' }}>
+                <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#b87333' }}>3</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)', marginTop: 'auto', marginBottom: '0.5rem' }}>{p3.score}</span>
+              </div>
             </div>
           )}
         </div>
