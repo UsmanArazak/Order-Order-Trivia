@@ -174,6 +174,18 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       setNickname(name);
       setRoom(roomData);
 
+      // Restore active question if game is in progress
+      if (roomData.game_status !== 'lobby' && roomData.current_question_index !== undefined) {
+        const { data: qData } = await supabase.from('questions')
+          .select('*')
+          .eq('room_code', code)
+          .order('created_at', { ascending: true });
+        
+        if (qData && qData.length > roomData.current_question_index) {
+          setCurrentQuestion(qData[roomData.current_question_index]);
+        }
+      }
+
       setupRealtimeSubscriptions(code, playerData.id);
     } catch (err) {
       clearSavedSession();
@@ -1150,17 +1162,19 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     );
   }
 
-  // Fallback Loading Screen (e.g. moving to next question)
-  if (room.game_status === 'question' && !currentQuestion) {
-    return (
-      <div className="player-layout">
-        <div className="player-status-waiting">
-          <div className="loading-spinner"></div>
-          <h2>Preparing Next Question...</h2>
-        </div>
+  // Fallback Loading Screen (for any desynced state)
+  return (
+    <div className="player-layout">
+      <div className="player-status-waiting">
+        <div className="loading-spinner"></div>
+        <h2>Syncing with Chambers...</h2>
+        <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', marginBottom: '2rem' }}>
+          Reconnecting you to the live parliamentary session.
+        </p>
+        <button className="btn btn-secondary" onClick={leaveGame} style={{ width: '100%' }}>
+          <LogOut size={16} /> Force Exit Room
+        </button>
       </div>
-    );
-  }
-
-  return null;
+    </div>
+  );
 };
