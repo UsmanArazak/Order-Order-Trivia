@@ -382,17 +382,6 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         question_started_at: startedAt
       });
 
-      // Start host-side countdown timer
-      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-      countdownIntervalRef.current = setInterval(() => {
-        setTimer((prev) => {
-          if (prev <= 1) {
-            clearInterval(countdownIntervalRef.current!);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
       return;
     }
 
@@ -435,17 +424,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         });
       }
 
-      // Start host-side countdown timer
-      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-      countdownIntervalRef.current = setInterval(() => {
-        setTimer((prev) => {
-          if (prev <= 1) {
-            clearInterval(countdownIntervalRef.current!);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+
     } catch (err: any) {
       setError(err.message || 'Error starting question');
     }
