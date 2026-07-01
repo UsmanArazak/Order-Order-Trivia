@@ -791,7 +791,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       return (
         <div className="player-layout">
           <div className="player-status-waiting">
-            <div className="loading-spinner"></div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '90px', height: '90px', borderRadius: '50%', backgroundColor: timer <= 5 ? 'rgba(226, 27, 60, 0.1)' : 'rgba(11, 102, 35, 0.05)', border: `4px solid ${timer <= 5 ? 'var(--color-red)' : 'var(--primary)'}`, margin: '0 auto 1.5rem', color: timer <= 5 ? 'var(--color-red)' : 'var(--primary-dark)', transition: 'all 0.3s ease' }}>
+              <span style={{ fontSize: '2.5rem', fontWeight: 900, lineHeight: 1 }}>{timer}</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>sec</span>
+            </div>
             <h2>Answer Recorded!</h2>
             <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', fontSize: '0.95rem' }}>
               {!hasSupabaseConfig ? 'Simulating submission reveal...' : 'Waiting for other parliamentarians to lock in their arguments.'}
