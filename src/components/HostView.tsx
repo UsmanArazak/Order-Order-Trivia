@@ -118,6 +118,37 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
   // Realtime Fallback Polling
   useEffect(() => {
+    if (!room || room.game_status !== 'question') return;
+    const pollInterval = setInterval(() => {
+      supabase.from('rooms').select('game_status').eq('code', room.code).single().then(({ data }) => {
+        if (data && data.game_status !== room.game_status) {
+          setRoom(prev => prev ? { ...prev, game_status: data.game_status } : prev);
+        }
+      });
+    }, 5000);
+    return () => clearInterval(pollInterval);
+  }, [room?.game_status, room?.code]);
+
+  // Timer countdown
+  useEffect(() => {
+    if (!room || room.game_status !== 'question') return;
+    
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          // Auto-reveal is handled by Bulletproof Auto-Reveal
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [room?.game_status, currentQuestion?.id]);
+
+  // Realtime Fallback Polling
+  useEffect(() => {
     if (!hasSupabaseConfig || !roomCode) return;
     
     let interval: any = null;

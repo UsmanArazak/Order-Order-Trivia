@@ -844,7 +844,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
             className={`timer-progress-bar-fill ${timer <= 5 ? 'critical' : ''}`}
             style={{ 
               width: `${(timer / totalDuration) * 100}%`,
-              backgroundColor: timer <= 5 ? 'var(--color-red)' : timer <= 10 ? 'var(--gold)' : 'var(--primary)'
+              backgroundColor: timer <= 5 ? 'var(--color-red)' : timer <= 10 ? 'var(--gold)' : 'var(--primary)',
+              transition: timer === totalDuration ? 'none' : 'width 1s linear, background-color 0.4s ease'
             }}
           />
         </div>
