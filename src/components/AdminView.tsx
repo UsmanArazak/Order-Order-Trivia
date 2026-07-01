@@ -214,7 +214,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ onBack }) => {
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <Lock size={48} style={{ color: 'var(--gold)', marginBottom: '1rem', marginInline: 'auto' }} />
             <h2>Admin Passcode</h2>
-            <p style={{ color: 'var(--text-secondary)' }}>Enter passcode to manage questions</p>
+            <p style={{ color: 'var(--text-secondary)' }}>Hmmmm...Wetin you wan do for here? Only Usman can change the questions</p>
           </div>
           <form onSubmit={handleLogin}>
             <div className="form-group">

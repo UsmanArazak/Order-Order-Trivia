@@ -86,7 +86,7 @@ function App() {
                 }}
               >
                 <BookOpen size={18} />
-                <span>Manage Questions Bank</span>
+                <span>Manage Questions</span>
               </button>
             </div>
 
