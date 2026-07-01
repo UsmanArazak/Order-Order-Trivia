@@ -889,14 +889,12 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
           <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {ranked.slice(0, 5).map((player) => (
-              <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.75rem', gap: '0.25rem', borderRadius: 'var(--radius-md)' }}>
-                <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
-                  <span className="leaderboard-rank" style={{ fontSize: '1.1rem', width: 'auto' }}>#{player.rank}</span>
-                  <span className="leaderboard-name" style={{ fontSize: '1.1rem', whiteSpace: 'normal', flex: 1, textAlign: 'center' }}>{player.name}</span>
-                </div>
-                <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
-                  <span className="leaderboard-score" style={{ width: 'auto', textAlign: 'center', fontSize: '0.9rem' }}>{player.score} pts</span>
-                  <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ width: 'auto', textAlign: 'center', fontSize: '0.8rem' }}>
+              <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0.75rem 0.5rem', gap: '0.5rem', borderRadius: 'var(--radius-sm)' }}>
+                <span className="leaderboard-rank" style={{ fontSize: '1rem', width: '28px', flexShrink: 0, textAlign: 'center', display: 'flex', justifyContent: 'center' }}>#{player.rank}</span>
+                <span className="leaderboard-name" style={{ fontSize: '0.95rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 700 }}>{player.name}</span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, gap: '0.1rem' }}>
+                  <span className="leaderboard-score" style={{ fontSize: '0.9rem', fontWeight: 800 }}>{player.score} pts</span>
+                  <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ fontSize: '0.75rem', fontWeight: 800 }}>
                     {player.change > 0 ? `▲ ${player.change}` : player.change < 0 ? `▼ ${Math.abs(player.change)}` : '—'}
                   </span>
                 </div>
