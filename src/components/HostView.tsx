@@ -42,7 +42,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [timer, setTimer] = useState<number>(30);
+  const [timer, setTimer] = useState<number>(20);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -339,7 +339,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     const question = questions[index];
     setCurrentQuestion(question);
     setAnswers([]); // clear answers for new question
-    setTimer(30);
+    setTimer(20);
 
     const startedAt = new Date().toISOString();
 
@@ -398,7 +398,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             questionIndex: index,
             questionId: question.id,
             startedAt,
-            duration: 30,
+            duration: 20,
             questionData: question,
           },
         });
@@ -435,8 +435,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           let pointsEarned = 0;
 
           if (playerAnswer && playerAnswer.selected_option === currentQuestion.correct_index) {
-            const respTime = Math.min(30, Math.max(0, playerAnswer.response_time));
-            pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 30) * 0.5)));
+            const respTime = Math.min(20, Math.max(0, playerAnswer.response_time));
+            pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 20) * 0.5)));
           }
 
           if (playerAnswer) {
@@ -485,8 +485,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
         if (playerAnswer && playerAnswer.selected_option === currentQuestion.correct_index) {
           // Speed calculation
-          const respTime = Math.min(30, Math.max(0, playerAnswer.response_time));
-          pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 30) * 0.5)));
+          const respTime = Math.min(20, Math.max(0, playerAnswer.response_time));
+          pointsEarned = Math.max(500, Math.round(1000 * (1 - (respTime / 20) * 0.5)));
         }
 
         const newScore = player.score + pointsEarned;
@@ -651,9 +651,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
     return currentSorted.map((player, idx) => {
       const currentRank = idx + 1;
-      const prevIdx = previousSorted.findIndex((p) => p.id === player.id);
-      const prevRank = prevIdx === -1 ? currentRank : prevIdx + 1;
-      const change = prevRank - currentRank;
+      const change = player.score - player.previous_score;
 
       return {
         ...player,
@@ -895,7 +893,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, gap: '0.1rem' }}>
                   <span className="leaderboard-score" style={{ fontSize: '0.95rem', fontWeight: 800 }}>{player.score} pts</span>
                   <span className={`leaderboard-change ${player.change > 0 ? 'up' : player.change < 0 ? 'down' : ''}`} style={{ fontSize: '0.75rem', fontWeight: 800, color: player.change > 0 ? 'var(--color-green)' : player.change < 0 ? 'var(--color-red)' : 'var(--text-muted)' }}>
-                    {player.change > 0 ? `▲ ${player.change}` : player.change < 0 ? `▼ ${Math.abs(player.change)}` : '—'}
+                    {player.change > 0 ? `+${player.change}` : player.change < 0 ? `${player.change}` : '—'}
                   </span>
                 </div>
               </div>
@@ -938,7 +936,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           <h1 style={{ color: 'var(--primary-dark)', fontSize: '1.5rem', margin: '0.25rem 0' }}>The Podium</h1>
         </div>
 
-        <div className="podium-layout" style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '0.5rem', height: '180px', margin: '1rem 0 2rem 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '0.5rem', height: '180px', margin: '1rem 0 2rem 0' }}>
           {/* Silver: 2nd Place */}
           {p2 && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%' }}>
