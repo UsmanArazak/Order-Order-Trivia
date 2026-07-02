@@ -385,32 +385,9 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     }
 
     try {
-      // First update the database room state
-      const { error: roomErr } = await supabase
-        .from('rooms')
-        .update({
-          current_question_index: index,
-          game_status: 'question',
-          question_started_at: startedAt,
-        })
-        .eq('code', roomCode);
-
-      if (roomErr) throw roomErr;
-
-      setRoom((prev) =>
-        prev
-          ? {
-              ...prev,
-              current_question_index: index,
-              game_status: 'question',
-              question_started_at: startedAt,
-            }
-          : null
-      );
-
-      // Secondly, broadcast "question started" message to all connected phones immediately
+      // 1. Broadcast "question started" message to all connected phones immediately!
       if (channelRef.current) {
-        await channelRef.current.send({
+        channelRef.current.send({
           type: 'broadcast',
           event: 'question_started',
           payload: {
@@ -423,6 +400,30 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
         });
       }
 
+      // 2. Update local state immediately so Host timer starts in perfect sync
+      setRoom((prev) =>
+        prev
+          ? {
+              ...prev,
+              current_question_index: index,
+              game_status: 'question',
+              question_started_at: startedAt,
+            }
+          : null
+      );
+
+      // 3. Update the database room state in the background
+      supabase
+        .from('rooms')
+        .update({
+          current_question_index: index,
+          game_status: 'question',
+          question_started_at: startedAt,
+        })
+        .eq('code', roomCode)
+        .then(({ error: roomErr }) => {
+          if (roomErr) console.error("Error updating room state", roomErr);
+        });
 
     } catch (err: any) {
       setError(err.message || 'Error starting question');
