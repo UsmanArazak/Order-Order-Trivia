@@ -805,8 +805,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
               <div className="loading-spinner" style={{ margin: '1rem auto 2rem' }}></div>
               <span className="tagline">Chamber Connected</span>
               <h2 style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>Welcome, {player.name}!</h2>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                You are seated in the chambers. Waiting for <span style={{ color: 'var(--primary)', fontWeight: 900 }}>Usman</span> to start the parliamentary session.
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '0.95rem', lineHeight: '1.8' }}>
+                You are seated in the chambers. Waiting for <span style={{ color: 'var(--gold-dark)', backgroundColor: 'var(--bg-surface)', border: '2px solid var(--gold)', padding: '0.15rem 0.6rem', borderRadius: '6px', fontWeight: 900, boxShadow: '0 2px 4px rgba(205,127,50,0.2)', margin: '0 0.15rem', display: 'inline-block', transform: 'translateY(-1px)' }}>Usman</span> to start the parliamentary session.
               </p>
             </div>
           )}
