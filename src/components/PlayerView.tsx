@@ -52,6 +52,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
   const [totalPlayersCount, setTotalPlayersCount] = useState<number>(5);
   const [neighborPlayers, setNeighborPlayers] = useState<(Player & { rank: number })[]>([]);
   const [topPlayers, setTopPlayers] = useState<any[]>([]);
+  const [totalQuestions, setTotalQuestions] = useState<number>(0);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -72,6 +73,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     if (savedPlayerId && savedRoomCode && savedNickname) {
       attemptAutoReconnect(savedPlayerId, savedRoomCode, savedNickname);
     }
+    
+    // Fetch total questions for the progress display
+    const fetchTotalQuestions = async () => {
+      if (hasSupabaseConfig) {
+        const { count } = await supabase.from('questions').select('*', { count: 'exact', head: true });
+        if (count) setTotalQuestions(count);
+      } else {
+        setTotalQuestions(MOCK_QUESTIONS.length);
+      }
+    };
+    fetchTotalQuestions();
 
     return () => {
       cleanupRealtime();
@@ -526,10 +538,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
         setMyRank(currentRank);
 
         const playersWithRank = allPlayers.map((p: any, i: number) => ({
-          id: p.id,
-          name: p.name,
+          ...p,
           room_code: code,
-          score: p.score,
           previous_score: p.score,
           rank: i + 1
         }));
@@ -814,6 +824,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       return (
         <div className="player-layout">
           <div className="player-status-waiting">
+            <div style={{ textAlign: 'center', fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-secondary)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Question {room.current_question_index + 1}/{totalQuestions}
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '90px', height: '90px', borderRadius: '50%', backgroundColor: timer <= 5 ? 'rgba(226, 27, 60, 0.1)' : 'rgba(11, 102, 35, 0.05)', border: `4px solid ${timer <= 5 ? 'var(--color-red)' : 'var(--primary)'}`, margin: '0 auto 1.5rem', color: timer <= 5 ? 'var(--color-red)' : 'var(--primary-dark)', transition: 'all 0.3s ease' }}>
               <span style={{ fontSize: '2.5rem', fontWeight: 900, lineHeight: 1 }}>{timer}</span>
               <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>sec</span>
@@ -838,12 +851,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       );
     }
 
-
-
     return (
       <div className="player-layout">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', marginBottom: '0.5rem' }}>
           <span style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 700 }}>{player.name}</span>
+          <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 700 }}>{room.current_question_index + 1}/{totalQuestions}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '1.2rem', fontWeight: 800, color: timer <= 5 ? 'var(--color-red)' : 'var(--primary-dark)' }}>
             <Clock size={16} /> {timer}s
           </div>
@@ -977,10 +989,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     return (
       <div className="player-layout" style={{ padding: '0.5rem' }}>
         <div style={{ backgroundColor: 'var(--bg-surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', borderTop: '4px solid var(--gold)', textAlign: 'center', width: '100%' }}>
-          <Award size={36} style={{ color: 'var(--gold)', marginBottom: '0.5rem', marginInline: 'auto' }} />
+          <Award size={36} style={{ display: 'block', color: 'var(--gold)', marginBottom: '0.5rem', marginInline: 'auto' }} />
           <span className="tagline" style={{ fontSize: '0.75rem', margin: 0 }}>Leaderboard</span>
           <h1 style={{ fontSize: '2.5rem', margin: '0.25rem 0', color: 'var(--gold-dark)', lineHeight: 1 }}>
-            #{myRank || '—'}
+            No. {myRank || '—'}
           </h1>
           <p style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>
             out of {totalPlayersCount} members
@@ -1014,7 +1026,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span style={{ fontSize: '0.85rem', color: isMe ? 'var(--primary-dark)' : 'var(--text-secondary)', fontWeight: 800 }}>
-                          #{p.rank}
+                          No. {p.rank}
                         </span>
                         <span style={{ fontSize: '0.9rem', color: isMe ? 'var(--primary-dark)' : 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100px' }}>
                           {p.name} {isMe && '(You)'}
@@ -1061,9 +1073,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
   if (room.game_status === 'finished') {
     return (
       <div className="player-layout">
-        <div className="join-card" style={{ textAlign: 'center', borderTop: '4px solid var(--gold)', width: '100%', maxWidth: '500px' }}>
-          <Award size={64} style={{ color: 'var(--gold)', marginBottom: '1rem', marginInline: 'auto' }} />
-          <h2 style={{ marginBottom: '0.5rem' }}>Debate Adjourned!</h2>
+        <div style={{ textAlign: 'center', padding: '2rem 1rem', width: '100%', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-color)' }}>
+          <Award size={64} style={{ display: 'block', color: 'var(--gold)', marginBottom: '1rem', marginInline: 'auto' }} />
+          <h2 style={{ color: 'var(--gold-dark)', marginBottom: '1.5rem', fontSize: '2.25rem', fontWeight: 900 }}>Game Finished!</h2>
           <p style={{ color: 'var(--text-secondary)' }}>You completed the parliamentary trivia quiz.</p>
 
           {/* Podium */}
@@ -1107,9 +1119,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
 
           <div style={{ margin: '1.5rem 0' }}>
             <span className="tagline">Final Position</span>
-            <h1 style={{ fontSize: '4rem', color: 'var(--gold-dark)', lineHeight: 1 }}>
-              #{myRank || '—'}
-            </h1>
+            <div style={{ fontSize: '3rem', fontWeight: 900, color: 'var(--gold)', lineHeight: 1 }}>
+              No. {myRank || '—'}
+            </div>
             <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>
               Score: {neighborPlayers.find(p => p.id === player.id)?.score || player.score} pts
             </p>
@@ -1139,8 +1151,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <span style={{ fontSize: '0.9rem', color: isMe ? 'var(--primary-dark)' : 'var(--text-secondary)', fontWeight: 800 }}>
-                          #{p.rank}
+                        <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--primary-dark)', minWidth: '2.5rem' }}>
+                          No. {p.rank}
                         </span>
                         <span style={{ color: isMe ? 'var(--primary-dark)' : 'var(--text-primary)' }}>
                           {p.name} {isMe && '(You)'}
