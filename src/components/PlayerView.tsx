@@ -601,6 +601,13 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       }).eq('id', player.id);
       if (playerErr) throw playerErr;
 
+      // Update local visual state so the phone shows the new total instantly
+      setPlayer((prev) => prev ? {
+        ...prev,
+        score: prev.score + points,
+        previous_score: prev.score
+      } : null);
+
       setMyAnswer({
         id: 'temp',
         player_id: player.id,
