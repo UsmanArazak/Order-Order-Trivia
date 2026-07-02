@@ -579,6 +579,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     }
 
     try {
+      const isCorrect = optionIdx === currentQuestion.correct_index;
+      const points = isCorrect ? Math.max(500, Math.round(1000 * (1 - (responseTimeSec / 20) * 0.5))) : 0;
+
       const { error: ansErr } = await supabase.from('answers').insert([
         {
           player_id: player.id,
@@ -586,13 +589,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
           question_id: currentQuestion.id,
           selected_option: optionIdx,
           response_time: responseTimeSec,
-          points: 0,
+          points: points,
         },
       ]);
       if (ansErr) throw ansErr;
 
-      const isCorrect = optionIdx === currentQuestion.correct_index;
-      const points = isCorrect ? Math.max(500, Math.round(1000 * (1 - (responseTimeSec / 20) * 0.5))) : 0;
+      // Ensure the master database record is updated with the new score!
+      const { error: playerErr } = await supabase.from('players').update({
+        score: player.score + points,
+        previous_score: player.score
+      }).eq('id', player.id);
+      if (playerErr) throw playerErr;
 
       setMyAnswer({
         id: 'temp',

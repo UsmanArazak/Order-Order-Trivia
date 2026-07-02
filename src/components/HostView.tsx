@@ -175,9 +175,9 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     if (!hasSupabaseConfig) {
       const local = localStorage.getItem('order_trivia_mock_questions');
       if (local) {
-        setQuestions(JSON.parse(local).slice(0, 3));
+        setQuestions(JSON.parse(local));
       } else {
-        setQuestions(MOCK_QUESTIONS.slice(0, 3));
+        setQuestions(MOCK_QUESTIONS);
       }
       setLoading(false);
       return;
@@ -187,8 +187,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
       const { data, error: qErr } = await supabase
         .from('questions')
         .select('*')
-        .order('created_at', { ascending: true })
-        .limit(3); // Testing limit
+        .order('created_at', { ascending: true });
       if (qErr) throw qErr;
       setQuestions(data || []);
     } catch (err: any) {
