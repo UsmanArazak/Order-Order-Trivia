@@ -1013,14 +1013,6 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
                         <span style={{ color: isMe ? 'var(--primary-dark)' : 'var(--text-secondary)', fontSize: '0.85rem' }}>
                           {p.score} pts
                         </span>
-                        {!isMe && (
-                          <span style={{ fontSize: '0.7rem', color: p.rank < (myRank || 1) ? 'var(--color-red)' : 'var(--color-green)', fontWeight: 600 }}>
-                            {p.rank < (myRank || 1) 
-                              ? `-${p.score - player.score}` 
-                              : `+${player.score - p.score}`
-                            }
-                          </span>
-                        )}
                       </div>
                     </div>
                   );
