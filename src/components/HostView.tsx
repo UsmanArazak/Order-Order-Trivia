@@ -421,8 +421,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           question_started_at: startedAt,
         })
         .eq('code', roomCode)
-        .then(({ error: roomErr }) => {
-          if (roomErr) console.error("Error updating room state", roomErr);
+        .then((res: any) => {
+          if (res.error) console.error("Error updating room state", res.error);
         });
 
     } catch (err: any) {
