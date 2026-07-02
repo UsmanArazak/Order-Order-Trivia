@@ -447,8 +447,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     const { data: qList } = await supabase
       .from('questions')
       .select('*')
-      .order('created_at', { ascending: true })
-      .limit(3); // Testing limit
+      .order('created_at', { ascending: true });
 
     if (!qList || qList.length <= dbRoom.current_question_index) return;
     const qData = qList[dbRoom.current_question_index];
