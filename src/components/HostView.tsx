@@ -644,13 +644,14 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
   // Answers options distribution for the reveal screen
   const getAnswersDistribution = () => {
-    const counts = [0, 0, 0, 0];
-    answers.forEach((ans) => {
+    const dist = [0, 0, 0, 0];
+    const currentQAnswers = answers.filter(a => a.question_id === currentQuestion?.id);
+    currentQAnswers.forEach((ans) => {
       if (ans.selected_option >= 0 && ans.selected_option < 4) {
-        counts[ans.selected_option]++;
+        dist[ans.selected_option]++;
       }
     });
-    return counts;
+    return dist;
   };
 
   // Rank players for Leaderboard (including rank change indicators)
@@ -758,9 +759,9 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     );
   }
 
-  // 2. Question Active Screen
   if (room.game_status === 'question' && currentQuestion) {
-    const answeredCount = answers.length;
+    const currentQAnswers = answers.filter(a => a.question_id === currentQuestion.id);
+    const answeredCount = currentQAnswers.length;
     const totalCount = players.length;
 
     return (
