@@ -905,7 +905,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {ranked.slice(0, 5).map((player) => (
               <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0.75rem 0.75rem', gap: '0.5rem', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', width: '100%' }}>
-                <span className="leaderboard-rank" style={{ fontSize: '1rem', width: '28px', flexShrink: 0, textAlign: 'center', display: 'flex', justifyContent: 'center', color: 'var(--text-secondary)' }}>No. {player.rank}</span>
+                <span className="leaderboard-rank" style={{ fontSize: '1rem', minWidth: '45px', whiteSpace: 'nowrap', flexShrink: 0, textAlign: 'center', display: 'flex', justifyContent: 'center', color: 'var(--text-secondary)' }}>No. {player.rank}</span>
                 <span className="leaderboard-name" style={{ fontSize: '1rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 700, color: 'var(--primary-dark)' }}>{player.name}</span>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, gap: '0.1rem' }}>
                   <span className="leaderboard-score" style={{ fontSize: '0.95rem', fontWeight: 800 }}>{player.score} pts</span>

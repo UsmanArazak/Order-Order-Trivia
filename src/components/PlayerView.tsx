@@ -806,7 +806,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
               <span className="tagline">Chamber Connected</span>
               <h2 style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>Welcome, {player.name}!</h2>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                You are seated in the chambers. Waiting for Usman to start the parliamentary session.
+                You are seated in the chambers. Waiting for <span style={{ color: 'var(--primary)', fontWeight: 900 }}>Usman</span> to start the parliamentary session.
               </p>
             </div>
           )}
