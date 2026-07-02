@@ -960,7 +960,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%' }}>
               <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#C0C0C0', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{p2.name}</span>
               <div style={{ width: '100%', height: '100px', backgroundColor: '#e0e0e0', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid #C0C0C0' }}>
-                <span style={{ fontSize: '1.5rem', fontWeight: 900, color: '#a0a0a0' }}>2</span>
+                <span style={{ fontSize: '1.5rem', fontWeight: 900, color: '#a0a0a0', whiteSpace: 'nowrap' }}>No. 2</span>
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)', marginTop: 'auto', marginBottom: '0.5rem' }}>{p2.score}</span>
               </div>
             </div>
@@ -972,7 +972,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
               <span style={{ fontSize: '1.5rem', marginBottom: '0.1rem' }}>👑</span>
               <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--gold-dark)', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{p1.name}</span>
               <div style={{ width: '100%', height: '140px', backgroundColor: 'var(--gold)', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid var(--gold-dark)', boxShadow: '0 -4px 12px rgba(212, 175, 55, 0.4)' }}>
-                <span style={{ fontSize: '2rem', fontWeight: 900, color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>1</span>
+                <span style={{ fontSize: '1.8rem', fontWeight: 900, color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.2)', whiteSpace: 'nowrap' }}>No. 1</span>
                 <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'white', marginTop: 'auto', marginBottom: '0.5rem' }}>{p1.score}</span>
               </div>
             </div>
@@ -983,7 +983,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%' }}>
               <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#cd7f32', textAlign: 'center', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{p3.name}</span>
               <div style={{ width: '100%', height: '80px', backgroundColor: '#f0e6d2', borderRadius: '4px 4px 0 0', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '0.5rem', border: '1px solid #cd7f32' }}>
-                <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#b87333' }}>3</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#b87333', whiteSpace: 'nowrap' }}>No. 3</span>
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary-dark)', marginTop: 'auto', marginBottom: '0.5rem' }}>{p3.score}</span>
               </div>
             </div>
