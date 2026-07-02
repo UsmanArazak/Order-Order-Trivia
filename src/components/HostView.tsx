@@ -906,7 +906,7 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
           <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {ranked.slice(0, 5).map((player) => (
               <div key={player.id} className={`leaderboard-item rank-${player.rank}`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0.75rem 0.75rem', gap: '0.5rem', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', width: '100%' }}>
-                <span className="leaderboard-rank" style={{ fontSize: '1.1rem', fontWeight: 800, minWidth: '55px', whiteSpace: 'nowrap', flexShrink: 0, textAlign: 'center', display: 'inline-block', color: 'var(--text-secondary)' }}>No. {player.rank}</span>
+                <span className="leaderboard-rank" style={{ fontSize: '1.1rem', fontWeight: 800, minWidth: '65px', flexShrink: 0, textAlign: 'center', color: 'var(--text-secondary)' }}>{`No.\u00A0${player.rank}`}</span>
                 <span className="leaderboard-name" style={{ fontSize: '1rem', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 700, color: 'var(--primary-dark)' }}>{player.name}</span>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, gap: '0.1rem' }}>
                   <span className="leaderboard-score" style={{ fontSize: '0.95rem', fontWeight: 800 }}>{player.score} pts</span>
@@ -997,8 +997,8 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center' }}>
               {sorted.slice(3).map((p, idx) => (
                 <span key={p.id} className="player-bubble" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>
-                  <div style={{ fontWeight: 700, color: 'var(--text-secondary)' }}>
-                    No. {idx + 4} {p.name}
+                  <div style={{ fontWeight: 700, color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                    {`No.\u00A0${idx + 4} `} {p.name}
                   </div>
                 </span>
               ))}
