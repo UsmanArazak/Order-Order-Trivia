@@ -535,9 +535,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
           rank: i + 1
         }));
 
-        const startIdx = Math.max(0, idx - 1);
-        const endIdx = Math.min(allPlayers.length, idx + 2);
-        setNeighborPlayers(playersWithRank.slice(startIdx, endIdx));
+        setNeighborPlayers(playersWithRank);
         setTopPlayers(playersWithRank.slice(0, 3));
       }
     }
@@ -982,9 +980,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
           {neighborPlayers.length > 0 && (
             <div style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'left' }}>
               <span className="tagline" style={{ display: 'block', marginBottom: '0.5rem', textAlign: 'center', fontSize: '0.75rem' }}>
-                Your Chamber Neighbors
+                All Players Standings
               </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', maxHeight: '250px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                 {neighborPlayers.map((p) => {
                   const isMe = p.id === player.id;
                   return (
@@ -1100,7 +1098,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
               #{myRank || '—'}
             </h1>
             <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>
-              Score: {player.score} pts
+              Score: {neighborPlayers.find(p => p.id === player.id)?.score || player.score} pts
             </p>
           </div>
 
@@ -1108,9 +1106,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
           {neighborPlayers.length > 0 && (
             <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem', textAlign: 'left' }}>
               <span className="tagline" style={{ display: 'block', marginBottom: '0.75rem', textAlign: 'center' }}>
-                Final Chamber Placement
+                All Players Final Standings
               </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.75rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.75rem', maxHeight: '300px', overflowY: 'auto' }}>
                 {neighborPlayers.map((p) => {
                   const isMe = p.id === player.id;
                   return (
