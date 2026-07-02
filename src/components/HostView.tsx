@@ -646,7 +646,12 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
   const getAnswersDistribution = () => {
     const dist = [0, 0, 0, 0];
     const currentQAnswers = answers.filter(a => a.question_id === currentQuestion?.id);
-    currentQAnswers.forEach((ans) => {
+    
+    // Deduplicate to ensure one vote per player
+    const uniqueAnswers = new Map();
+    currentQAnswers.forEach(a => uniqueAnswers.set(a.player_id, a));
+    
+    uniqueAnswers.forEach((ans) => {
       if (ans.selected_option >= 0 && ans.selected_option < 4) {
         dist[ans.selected_option]++;
       }
@@ -761,7 +766,10 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
   if (room.game_status === 'question' && currentQuestion) {
     const currentQAnswers = answers.filter(a => a.question_id === currentQuestion.id);
-    const answeredCount = currentQAnswers.length;
+    const uniqueAnswers = new Map();
+    currentQAnswers.forEach(a => uniqueAnswers.set(a.player_id, a));
+    
+    const answeredCount = uniqueAnswers.size;
     const totalCount = players.length;
 
     return (
