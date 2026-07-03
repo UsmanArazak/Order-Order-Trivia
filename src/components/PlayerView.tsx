@@ -499,9 +499,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     }, 1000);
   };
 
-  // Fetch answer points once revealed
   const fetchMyAnswerPoints = async (playerId: string) => {
     if (!currentQuestion) return;
+    
+    // Fetch this specific answer
     const { data: ans } = await supabase
       .from('answers')
       .select('*')
@@ -511,33 +512,55 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
 
     setMyAnswer(ans || null);
 
+    // Fetch player baseline data
     const { data: playData } = await supabase
       .from('players')
       .select('*')
       .eq('id', playerId)
       .maybeSingle();
 
+    // Fetch all answers to calculate score
+    const { data: allAns } = await supabase
+      .from('answers')
+      .select('points')
+      .eq('player_id', playerId);
+
     if (playData) {
-      setPlayer(playData);
+      const totalPoints = (allAns || []).reduce((sum: number, a: any) => sum + (a.points || 0), 0);
+      setPlayer({ ...playData, score: totalPoints });
     }
   };
 
-  // Fetch current rank on Leaderboard state
   const fetchMyRank = async (code: string, playerId: string) => {
-    const { data: allPlayers } = await supabase
+    const { data: playData } = await supabase
       .from('players')
       .select('id, name, score')
-      .eq('room_code', code)
-      .order('score', { ascending: false });
+      .eq('room_code', code);
 
-    if (allPlayers) {
-      setTotalPlayersCount(allPlayers.length);
-      const idx = allPlayers.findIndex((p: any) => p.id === playerId);
+    const { data: ansData } = await supabase
+      .from('answers')
+      .select('player_id, points')
+      .eq('room_code', code);
+
+    if (playData) {
+      const dbPlayers = playData || [];
+      const allAnswers = ansData || [];
+
+      const playersWithScores = dbPlayers.map((p: any) => {
+        const pAnswers = allAnswers.filter((a: any) => a.player_id === p.id);
+        const total = pAnswers.reduce((sum: number, a: any) => sum + (a.points || 0), 0);
+        return { ...p, score: total };
+      });
+
+      const sortedPlayers = [...playersWithScores].sort((a, b) => b.score - a.score);
+      setTotalPlayersCount(sortedPlayers.length);
+      
+      const idx = sortedPlayers.findIndex((p: any) => p.id === playerId);
       if (idx !== -1) {
         const currentRank = idx + 1;
         setMyRank(currentRank);
 
-        const playersWithRank = allPlayers.map((p: any, i: number) => ({
+        const playersWithRank = sortedPlayers.map((p: any, i: number) => ({
           ...p,
           room_code: code,
           previous_score: p.score,

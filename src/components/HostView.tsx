@@ -328,12 +328,28 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
   const fetchPlayers = async (code: string) => {
     if (!hasSupabaseConfig) return;
-    const { data, error: pErr } = await supabase
+    
+    const { data: playData, error: pErr } = await supabase
       .from('players')
       .select('*')
       .eq('room_code', code);
-    if (!pErr && data) {
-      setPlayers(data);
+
+    const { data: ansData } = await supabase
+      .from('answers')
+      .select('player_id, points')
+      .eq('room_code', code);
+
+    if (!pErr && playData) {
+      const allAnswers = ansData || [];
+      const playersWithScores = playData.map((p: Player) => {
+        const pAnswers = allAnswers.filter((a: any) => a.player_id === p.id);
+        const total = pAnswers.reduce((sum: number, a: any) => sum + (a.points || 0), 0);
+        return { ...p, score: total };
+      });
+
+      const ranked = [...playersWithScores].sort((a, b) => b.score - a.score);
+      ranked.forEach((p, idx) => { p.rank = idx + 1; });
+      setPlayers(ranked);
     }
   };
 
