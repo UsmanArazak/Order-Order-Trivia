@@ -603,19 +603,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       ]);
       if (ansErr) throw ansErr;
 
-      // Ensure the master database record is updated with the new score!
-      const { error: playerErr } = await supabase.from('players').update({
-        score: player.score + points,
-        previous_score: player.score
-      }).eq('id', player.id);
-      if (playerErr) throw playerErr;
-
-      // Update local visual state so the phone shows the new total instantly
-      setPlayer((prev) => prev ? {
-        ...prev,
-        score: prev.score + points,
-        previous_score: prev.score
-      } : null);
+      // We ONLY insert the answer here. 
+      // The Host will safely calculate and update the master player score when the round ends to prevent double-counting!
 
       setMyAnswer({
         id: 'temp',
