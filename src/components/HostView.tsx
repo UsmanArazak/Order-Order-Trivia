@@ -501,11 +501,10 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
         const newScore = player.score + pointsEarned;
 
-        // Update player in database (set previous_score to current score, score to newScore)
+        // Update player in database (set score to newScore)
         const { error: pUpErr } = await supabase
           .from('players')
           .update({
-            previous_score: player.score,
             score: newScore,
           })
           .eq('id', player.id);
