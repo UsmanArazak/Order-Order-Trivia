@@ -461,15 +461,20 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       return;
     }
 
-    setCurrentQuestion(null);
-    const { data: qList } = await supabase
-      .from('questions')
-      .select('*')
-      .order('created_at', { ascending: true });
+    if (hasSupabaseConfig && channelRef.current) {
+      // Instead of guessing the question from chronological DB order, ping the Host for the true randomized question!
+      channelRef.current.send({
+        type: 'broadcast',
+        event: 'request_sync',
+        payload: { playerId },
+      });
+      return; // The Host will respond with a question_started broadcast that sets everything up
+    }
 
-    if (!qList || qList.length <= dbRoom.current_question_index) return;
-    const qData = qList[dbRoom.current_question_index];
-    setCurrentQuestion(qData);
+    // Fallback for Sandbox Mode
+    setCurrentQuestion(null);
+    const qData = MOCK_QUESTIONS[dbRoom.current_question_index];
+    if (qData) setCurrentQuestion(qData);
 
     const startedAt = dbRoom.question_started_at || new Date().toISOString();
     roomStartedAtRef.current = startedAt;

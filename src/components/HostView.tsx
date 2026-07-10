@@ -44,6 +44,16 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
 
   const countdownIntervalRef = useRef<any>(null);
   const channelRef = useRef<any>(null);
+  const roomRef = useRef<Room | null>(null);
+  const currentQuestionRef = useRef<Question | null>(null);
+
+  useEffect(() => {
+    roomRef.current = room;
+  }, [room]);
+
+  useEffect(() => {
+    currentQuestionRef.current = currentQuestion;
+  }, [currentQuestion]);
 
   // Load questions on mount
   useEffect(() => {
@@ -285,6 +295,21 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     channel
       .on('broadcast', { event: 'player_ping' }, ({ payload }: { payload: any }) => {
         console.log('Player ping:', payload);
+      })
+      .on('broadcast', { event: 'request_sync' }, () => {
+        if (currentQuestionRef.current && roomRef.current?.game_status === 'question') {
+          channel.send({
+            type: 'broadcast',
+            event: 'question_started',
+            payload: {
+              questionIndex: roomRef.current.current_question_index,
+              questionId: currentQuestionRef.current.id,
+              startedAt: roomRef.current.question_started_at,
+              duration: 20,
+              questionData: currentQuestionRef.current,
+            },
+          });
+        }
       })
       .subscribe((status: any) => {
         console.log(`Supabase Broadcast channel room_${code} status:`, status);
