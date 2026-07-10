@@ -202,15 +202,11 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     setLoading(true);
     if (!hasSupabaseConfig) {
       const local = localStorage.getItem('order_trivia_mock_questions');
-      let mock = local ? JSON.parse(local) : [...MOCK_QUESTIONS];
-      
-      // Fisher-Yates Shuffle
-      for (let i = mock.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [mock[i], mock[j]] = [mock[j], mock[i]];
+      if (local) {
+        setQuestions(JSON.parse(local).slice(0, 20));
+      } else {
+        setQuestions([...MOCK_QUESTIONS].slice(0, 20));
       }
-      
-      setQuestions(mock.slice(0, 20));
       setLoading(false);
       return;
     }
@@ -218,18 +214,11 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     try {
       const { data, error: qErr } = await supabase
         .from('questions')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: true });
       if (qErr) throw qErr;
 
-      let fetchedQuestions = data || [];
-      
-      // Fisher-Yates Shuffle
-      for (let i = fetchedQuestions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [fetchedQuestions[i], fetchedQuestions[j]] = [fetchedQuestions[j], fetchedQuestions[i]];
-      }
-
-      setQuestions(fetchedQuestions.slice(0, 20));
+      setQuestions((data || []).slice(0, 20));
     } catch (err: any) {
       setError(err.message || 'Failed to fetch questions');
     } finally {
