@@ -55,6 +55,28 @@ export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
     currentQuestionRef.current = currentQuestion;
   }, [currentQuestion]);
 
+  // Heartbeat broadcast: constantly pulse the active question to ensure late joiners sync perfectly
+  useEffect(() => {
+    if (room?.game_status === 'question' && currentQuestion) {
+      const interval = setInterval(() => {
+        if (channelRef.current) {
+          channelRef.current.send({
+            type: 'broadcast',
+            event: 'question_started',
+            payload: {
+              questionIndex: room.current_question_index,
+              questionId: currentQuestion.id,
+              startedAt: room.question_started_at,
+              duration: 20,
+              questionData: currentQuestion,
+            },
+          });
+        }
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [room?.game_status, currentQuestion, room?.current_question_index, room?.question_started_at]);
+
   // Load questions on mount
   useEffect(() => {
     fetchQuestions();

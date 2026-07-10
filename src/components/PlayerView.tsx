@@ -410,6 +410,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     playerId: string,
     questionData?: any
   ) => {
+    if (currentQuestion?.id === questionId && roomStartedAtRef.current === startedAt) {
+      // We already have this exact question session loaded! Ignore the heartbeat broadcast.
+      return;
+    }
+
     roomStartedAtRef.current = startedAt;
     setHasSubmitted(false);
     setSelectedOption(null);
