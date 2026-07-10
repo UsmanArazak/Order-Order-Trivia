@@ -467,9 +467,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
     }
 
     setCurrentQuestion(null);
+    let qData: Question | null = null;
     
     if (!hasSupabaseConfig) {
-      const qData = MOCK_QUESTIONS[dbRoom.current_question_index];
+      qData = MOCK_QUESTIONS[dbRoom.current_question_index];
       if (qData) setCurrentQuestion(qData);
     } else {
       const { data: qList } = await supabase
@@ -478,9 +479,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
         .order('created_at', { ascending: true });
 
       if (!qList || qList.length <= dbRoom.current_question_index) return;
-      const qData = qList[dbRoom.current_question_index];
+      qData = qList[dbRoom.current_question_index];
       setCurrentQuestion(qData);
     }
+
+    if (!qData) return;
 
     const startedAt = dbRoom.question_started_at || new Date().toISOString();
     roomStartedAtRef.current = startedAt;
