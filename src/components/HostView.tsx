@@ -9,26 +9,26 @@ interface HostViewProps {
 }
 
 const MOCK_QUESTIONS: Question[] = [
-  { id: 'mock-1', question_text: 'What is a Parliament?', options: ['An assembly of elected representatives', 'A military command center', 'A private social club', 'A group of judges'], correct_index: 0 },
-  { id: 'mock-2', question_text: 'Who presides over a parliamentary sitting?', options: ['The Speaker', 'The President', 'The Chief Whip', 'The Clerk'], correct_index: 0 },
-  { id: 'mock-3', question_text: 'Who keeps the official records of a sitting?', options: ['The Clerk', 'The Secretary General', 'The Speaker', 'The Majority Leader'], correct_index: 0 },
-  { id: 'mock-4', question_text: 'What is a motion?', options: ['A formal proposal for debate', 'A physical movement in the House', 'An order from the Speaker', 'A signed law'], correct_index: 0 },
-  { id: 'mock-5', question_text: 'What is an Order Paper?', options: ['The daily agenda of business', 'A record of past decisions', 'A rulebook for members', 'A voting ballot'], correct_index: 0 },
-  { id: 'mock-6', question_text: 'Who moves a motion?', options: ['The Proposer', 'The Seconder', 'The Speaker', 'The Clerk'], correct_index: 0 },
-  { id: 'mock-7', question_text: 'Why must a motion be seconded?', options: ['To show support before debate', 'To immediately pass the motion', 'To challenge the Speaker', 'To record the vote'], correct_index: 0 },
-  { id: 'mock-8', question_text: 'What is the role of the Majority Leader?', options: ['To coordinate government business', 'To enforce discipline', 'To keep official records', 'To preside over the House'], correct_index: 0 },
-  { id: 'mock-9', question_text: 'What is the role of the Chief Whip?', options: ['To maintain member discipline', 'To present new laws', 'To manage House finances', 'To advise the Speaker'], correct_index: 0 },
-  { id: 'mock-10', question_text: 'What is a debate?', options: ['Formal discussion of a motion', 'A physical altercation', 'A private meeting of leaders', 'A direct order from the Speaker'], correct_index: 0 },
-  { id: 'mock-11', question_text: 'What does \'quorum\' mean?', options: ['Minimum members required to begin', 'Maximum members allowed to speak', 'A type of parliamentary vote', 'The end of a sitting'], correct_index: 0 },
-  { id: 'mock-12', question_text: 'How do you get permission to speak?', options: ['Stand and wait for the Speaker', 'Shout your name loudly', 'Walk to the center floor', 'Pass a note to the Clerk'], correct_index: 0 },
-  { id: 'mock-13', question_text: 'When is a Point of Order used?', options: ['When parliamentary rules are broken', 'When a member wants to leave', 'When a vote is tied', 'When introducing a guest'], correct_index: 0 },
-  { id: 'mock-14', question_text: 'What is a parliamentary vote?', options: ['Deciding to accept or reject a motion', 'Electing a new President', 'Choosing a seat in the House', 'Selecting the days agenda'], correct_index: 0 },
-  { id: 'mock-15', question_text: 'What does the Secretary General do?', options: ['Handles documents and admin duties', 'Leads the majority party', 'Forces members to attend', 'Resolves rule disputes'], correct_index: 0 },
-  { id: 'mock-16', question_text: 'What makes a good parliamentarian?', options: ['Discipline, respect, and confidence', 'Wealth and social status', 'Aggression and loudness', 'Ability to write fast'], correct_index: 0 },
-  { id: 'mock-17', question_text: 'Why speak only through the Speaker?', options: ['To maintain order and respect', 'To ensure the microphone is on', 'To waste debate time', 'To bypass the Chief Whip'], correct_index: 0 },
-  { id: 'mock-18', question_text: 'If a motion gets majority support, what happens?', options: ['It is passed by the House', 'It is debated again tomorrow', 'It is sent to the Clerk', 'It is immediately rejected'], correct_index: 0 },
-  { id: 'mock-19', question_text: 'Why form a Student Parliamentary Club?', options: ['To develop leadership and public speaking', 'To organize school parties', 'To bypass school exams', 'To protest against teachers'], correct_index: 0 },
-  { id: 'mock-20', question_text: 'What is the main aim of the Club?', options: ['Training in democratic values', 'Raising money for the school', 'Punishing misbehaving students', 'Playing political games'], correct_index: 0 }
+  { id: 'mock-1', question_text: 'What is a Parliament?', options: ['A military command center', 'An assembly of elected representatives', 'A private social club', 'A group of judges'], correct_index: 1 },
+  { id: 'mock-2', question_text: 'Who presides over a parliamentary sitting?', options: ['The President', 'The Speaker', 'The Chief Whip', 'The Clerk'], correct_index: 1 },
+  { id: 'mock-3', question_text: 'Who keeps the official records of a sitting?', options: ['The Secretary General', 'The Speaker', 'The Clerk', 'The Majority Leader'], correct_index: 2 },
+  { id: 'mock-4', question_text: 'What is a motion?', options: ['A physical movement in the House', 'An order from the Speaker', 'A formal proposal for debate', 'A signed law'], correct_index: 2 },
+  { id: 'mock-5', question_text: 'What is an Order Paper?', options: ['A rulebook for members', 'A record of past decisions', 'The daily agenda of business', 'A voting ballot'], correct_index: 2 },
+  { id: 'mock-6', question_text: 'Who moves a motion?', options: ['The Speaker', 'The Proposer', 'The Seconder', 'The Clerk'], correct_index: 1 },
+  { id: 'mock-7', question_text: 'Why must a motion be seconded?', options: ['To immediately pass the motion', 'To challenge the Speaker', 'To record the vote', 'To show support before debate'], correct_index: 3 },
+  { id: 'mock-8', question_text: 'What is the role of the Majority Leader?', options: ['To enforce discipline', 'To coordinate government business', 'To keep official records', 'To preside over the House'], correct_index: 1 },
+  { id: 'mock-9', question_text: 'What is the role of the Chief Whip?', options: ['To manage House finances', 'To advise the Speaker', 'To maintain member discipline', 'To present new laws'], correct_index: 2 },
+  { id: 'mock-10', question_text: 'What is a debate?', options: ['A physical altercation', 'Formal discussion of a motion', 'A private meeting of leaders', 'A direct order from the Speaker'], correct_index: 1 },
+  { id: 'mock-11', question_text: 'What does \'quorum\' mean?', options: ['Maximum members allowed to speak', 'A type of parliamentary vote', 'Minimum members required to begin', 'The end of a sitting'], correct_index: 2 },
+  { id: 'mock-12', question_text: 'How do you get permission to speak?', options: ['Shout your name loudly', 'Stand and wait for the Speaker', 'Walk to the center floor', 'Pass a note to the Clerk'], correct_index: 1 },
+  { id: 'mock-13', question_text: 'When is a Point of Order used?', options: ['When a member wants to leave', 'When a vote is tied', 'When parliamentary rules are broken', 'When introducing a guest'], correct_index: 2 },
+  { id: 'mock-14', question_text: 'What is a parliamentary vote?', options: ['Choosing a seat in the House', 'Selecting the days agenda', 'Deciding to accept or reject a motion', 'Electing a new President'], correct_index: 2 },
+  { id: 'mock-15', question_text: 'What does the Secretary General do?', options: ['Leads the majority party', 'Handles documents and admin duties', 'Forces members to attend', 'Resolves rule disputes'], correct_index: 1 },
+  { id: 'mock-16', question_text: 'What makes a good parliamentarian?', options: ['Wealth and social status', 'Aggression and loudness', 'Ability to write fast', 'Discipline, respect, and confidence'], correct_index: 3 },
+  { id: 'mock-17', question_text: 'Why speak only through the Speaker?', options: ['To waste debate time', 'To ensure the microphone is on', 'To maintain order and respect', 'To bypass the Chief Whip'], correct_index: 2 },
+  { id: 'mock-18', question_text: 'If a motion gets majority support, what happens?', options: ['It is debated again tomorrow', 'It is passed by the House', 'It is sent to the Clerk', 'It is immediately rejected'], correct_index: 1 },
+  { id: 'mock-19', question_text: 'Why form a Student Parliamentary Club?', options: ['To organize school parties', 'To bypass school exams', 'To develop leadership and public speaking', 'To protest against teachers'], correct_index: 2 },
+  { id: 'mock-20', question_text: 'What is the main aim of the Club?', options: ['Raising money for the school', 'Punishing misbehaving students', 'Playing political games', 'Training in democratic values'], correct_index: 3 }
 ];
 
 export const HostView: React.FC<HostViewProps> = ({ onBack }) => {
