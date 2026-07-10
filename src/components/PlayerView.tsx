@@ -289,6 +289,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ onBack }) => {
       if (existingPlayer) {
         joinedPlayer = existingPlayer;
       } else {
+        if (roomData.game_status !== 'lobby') {
+          setError('The game has already started! Please wait for the next session.');
+          setLoading(false);
+          return;
+        }
+
         const { data: newPlayer, error: createErr } = await supabase
           .from('players')
           .insert([
